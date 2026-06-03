@@ -71,6 +71,24 @@ The iframe runs with `sandbox="allow-scripts allow-forms allow-pointer-lock allo
 | [`portableweb/cli`](https://github.com/portableweb/cli) | `pweb` CLI — `pack`, `validate`, `init` |
 | [`portableweb/viewer`](https://github.com/portableweb/viewer) | Native desktop viewer (Tauri) with full sandbox and `pweb://` protocol |
 
+## Known issues / TODOs
+
+### Recent files re-open (not yet implemented)
+
+The "Recent" section in the dashboard stores filenames and titles in `localStorage`
+but cannot re-open files — the browser has no persistent access to the original file
+path after the session ends.
+
+**Fix:** Use the [File System Access API](https://developer.chrome.com/docs/capabilities/web-apis/file-system-access)
+to store a `FileSystemFileHandle` per recent entry in IndexedDB.
+On click, call `handle.requestPermission({ mode: 'read' })` to re-acquire access,
+then `handle.getFile()` → `openBundle(file)`.
+
+Caveats:
+- Chrome/Edge desktop only (no Firefox, no mobile Safari)
+- Requires a user permission re-prompt each browser session
+- Handle goes stale if the file is moved or deleted
+
 ## License
 
 MIT — see [portableweb/spec](https://github.com/portableweb/spec) for the CC-BY 4.0 spec license.
