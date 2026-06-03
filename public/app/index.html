@@ -1191,17 +1191,127 @@ const App = (() => {
     };
     Object.keys(manifest).forEach(k => manifest[k] === undefined && delete manifest[k]);
 
-    const css = `/* ${title} */
+    const css = `/* ${title} — PortableWeb v0.1 */
 :root {
-  --ink:   #1a1714;
-  --paper: #f4ede0;
-  --serif: ui-serif, Georgia, "Times New Roman", serif;
+  --ink:        #0f0f1a;
+  --ink-soft:   #2d2d50;
+  --paper:      #f7f8ff;
+  --surface:    #edeeff;
+  --accent:     #7c3aed;
+  --blue:       #2563eb;
+  --teal:       #20d6d2;
+  --muted:      #6565a0;
+  --gradient:   linear-gradient(135deg, #7c3aed 0%, #2563eb 46%, #20d6d2 100%);
+  --serif:      ui-serif, "Iowan Old Style", "Apple Garamond", Baskerville, "Times New Roman", serif;
+  --sans:       ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --mono:       ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  --radius:     10px;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ink:      #e8e8ff;
+    --ink-soft: #b0b0d8;
+    --paper:    #08080f;
+    --surface:  #0f0f1e;
+    --muted:    #7070a8;
+  }
 }
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html, body { background: var(--paper); color: var(--ink); font-family: var(--serif); font-size: 18px; line-height: 1.6; }
-main { max-width: 680px; margin: 3rem auto; padding: 0 1.5rem; }
-h1 { font-size: 2.25rem; font-style: italic; font-weight: 400; margin-bottom: 1rem; }
-p  { margin-bottom: 1rem; color: #3a342d; }
+html, body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: 18px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+main {
+  max-width: 680px;
+  margin: 4rem auto;
+  padding: 0 1.5rem;
+}
+header {
+  margin-bottom: 2.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid rgba(15,15,26,0.12);
+}
+@media (prefers-color-scheme: dark) {
+  header { border-bottom-color: rgba(232,232,255,0.1); }
+}
+.eyebrow {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 1rem;
+}
+.eyebrow::before {
+  content: "";
+  display: inline-block;
+  width: 20px;
+  height: 2px;
+  background: var(--gradient);
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+h1 {
+  font-size: clamp(2rem, 5vw, 2.75rem);
+  font-style: italic;
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin-bottom: 1rem;
+}
+h1 .highlight {
+  background: var(--gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.lead {
+  font-size: 1.1rem;
+  color: var(--ink-soft);
+  max-width: 32em;
+}
+.badge {
+  display: inline-block;
+  margin-top: 1.5rem;
+  padding: 0.4rem 1rem;
+  background: var(--gradient);
+  color: #fff;
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  border-radius: 4px;
+  cursor: pointer;
+  border: none;
+  transition: opacity 0.15s;
+}
+.badge:hover { opacity: 0.85; }
+section {
+  margin-top: 2.5rem;
+}
+h2 {
+  font-size: 1.3rem;
+  font-weight: 400;
+  font-style: italic;
+  margin-bottom: 0.75rem;
+  color: var(--ink);
+}
+p { margin-bottom: 0.85rem; color: var(--ink-soft); max-width: 36em; }
+code {
+  font-family: var(--mono);
+  font-size: 0.82em;
+  background: var(--surface);
+  padding: 1px 5px;
+  border-radius: 3px;
+  color: var(--accent);
+}
 `;
 
     const html = `<!DOCTYPE html>
@@ -1214,13 +1324,27 @@ p  { margin-bottom: 1rem; color: #3a342d; }
 </head>
 <body>
   <main>
-    <h1>${escHtml(title)}</h1>
-    ${description ? `<p>${escHtml(description)}</p>` : ''}
-    <p>Edit <code>index.html</code> to build your interactive document.<br>
-       Run <code>pweb pack ./</code> or drag this folder into the PortableWeb viewer to bundle it.</p>
+    <header>
+      <p class="eyebrow">PortableWeb &middot; v0.1</p>
+      <h1><span class="highlight">${escHtml(title)}</span></h1>
+      ${description ? `<p class="lead">${escHtml(description)}</p>` : '<p class="lead">An interactive document that lives in a file you own.</p>'}
+      <button class="badge" onclick="this.textContent = this.textContent === 'Hello!' ? '${escJs(title)}' : 'Hello!'">
+        Say hello &rarr;
+      </button>
+    </header>
+
+    <section>
+      <h2>Get started</h2>
+      <p>Edit <code>index.html</code> and <code>style.css</code> to build your interactive document.</p>
+      <p>When ready, pack it: drag the project folder onto the PortableWeb viewer, or run
+         <code>pweb pack ./</code> from the CLI.</p>
+    </section>
   </main>
   <script>
-    console.log('${escJs(title)} — PortableWeb v0.1');
+    console.log('%c${escJs(title)}%c — PortableWeb v0.1',
+      'background:linear-gradient(90deg,#7c3aed,#2563eb,#20d6d2);color:#fff;padding:2px 8px;border-radius:3px',
+      'color:inherit'
+    );
   <\/script>
 </body>
 </html>
