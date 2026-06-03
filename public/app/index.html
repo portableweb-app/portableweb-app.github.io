@@ -935,20 +935,23 @@ const App = (() => {
   /* ── Bundle open ──────────────────────────────────────────────────────── */
 
   async function openBundle(file) {
-    // The service worker must be active before the iframe can load bundle files.
-    // On the very first page load the SW may not yet be controlling — wait for it.
-    if ('serviceWorker' in navigator && !navigator.serviceWorker.controller) {
-      showLoading('Initialising viewer…');
-      await navigator.serviceWorker.ready;
-      // SW just activated — reload so it can control this page, then re-open.
-      sessionStorage.setItem('pweb-pending-reopen', '1');
-      location.reload();
-      return;
-    }
-
     if (!('serviceWorker' in navigator)) {
       showError('Your browser must support Service Workers to open .pweb bundles.');
       return;
+    }
+
+    // The SW must be controlling this page before we set the iframe src,
+    // otherwise it won't intercept /app/bundle/* requests.
+    // On first load the SW installs and claims via clients.claim() — wait for it.
+    if (!navigator.serviceWorker.controller) {
+      await Promise.race([
+        new Promise(resolve =>
+          navigator.serviceWorker.addEventListener('controllerchange', resolve, { once: true })
+        ),
+        new Promise((_, reject) =>
+          setTimeout(() => reject(new Error('Viewer timed out initialising. Please reload and try again.')), 8000)
+        ),
+      ]);
     }
 
     showLoading('Opening bundle…');
@@ -997,9 +1000,9 @@ const App = (() => {
   function showViewer() {
     const { manifest, sessionId } = currentBundle;
     $('viewer-title').textContent = manifest.title;
-    // Service worker intercepts /bundle/<sessionId>/* and serves from IndexedDB.
-    // Relative fetch/import inside the bundle resolve against this URL correctly.
-    $('viewer-frame').src = `/bundle/${sessionId}/${manifest.entry}`;
+    // SW at /app/sw.js has scope /app/ — bundle URLs must be under /app/bundle/
+    // so the SW can intercept them and serve files from IndexedDB.
+    $('viewer-frame').src = `/app/bundle/${sessionId}/${manifest.entry}`;
     setView('viewer');
   }
 

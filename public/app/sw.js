@@ -1,5 +1,5 @@
 /* PortableWeb PWA service worker */
-const CACHE = 'portableweb-v2';
+const CACHE = 'portableweb-v3';
 const DB_NAME = 'portableweb';
 const STORE = 'bundle-files';
 
@@ -59,8 +59,8 @@ self.addEventListener('fetch', (e) => {
   const url = new URL(e.request.url);
   if (url.origin !== self.location.origin) return;
 
-  /* Bundle files: /bundle/<sessionId>/<path> — served from IndexedDB */
-  const bundleMatch = url.pathname.match(/^\/bundle\/([^/]+)\/(.*)/);
+  /* Bundle files: /app/bundle/<sessionId>/<path> — served from IndexedDB */
+  const bundleMatch = url.pathname.match(/^\/app\/bundle\/([^/]+)\/(.*)/);
   if (bundleMatch) {
     const [, sessionId, filePath] = bundleMatch;
     const path = filePath || 'index.html';
