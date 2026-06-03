@@ -123,51 +123,115 @@
       gap: 32px;
     }
 
-    /* Drop zone */
-    .drop-zone {
-      border: 1.5px dashed var(--border-mid);
-      border-radius: var(--radius);
-      padding: 40px 24px;
-      text-align: center;
+    /* ── Install / installed state banners ──────────────────────────────── */
+
+    /* Shown only when NOT installed (default); hidden in standalone mode */
+    .pre-install  { display: block; }
+    .post-install { display: none;  }
+
+    @media (display-mode: standalone) {
+      .pre-install  { display: none;  }
+      .post-install { display: block; }
+    }
+
+    .install-banner {
       display: flex;
-      flex-direction: column;
+      gap: 14px;
+      padding: 16px 18px;
+      background: var(--surface);
+      border: 1px solid var(--border-mid);
+      border-radius: var(--radius);
+      border-left: 3px solid var(--accent);
+    }
+
+    .install-banner-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: var(--gradient);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      flex-shrink: 0;
+    }
+
+    .install-banner-body { flex: 1; }
+
+    .install-banner-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 5px;
+    }
+
+    .install-banner-desc {
+      font-size: 12.5px;
+      color: var(--ink-soft);
+      line-height: 1.5;
+      margin-bottom: 10px;
+    }
+
+    .install-banner-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+
+    .btn-install {
+      padding: 6px 16px;
+      background: var(--gradient);
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      font-family: var(--mono);
+      font-size: 10.5px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: opacity 0.15s;
+    }
+    .btn-install:hover { opacity: 0.85; }
+
+    .install-manual-hint {
+      font-size: 11.5px;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+    .install-manual-hint strong { color: var(--ink-soft); font-weight: 500; }
+
+    .installed-banner {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 12px 16px;
+      background: rgba(5,150,105,0.07);
+      border: 1px solid rgba(5,150,105,0.25);
+      border-radius: var(--radius);
+      font-size: 13px;
+      color: var(--ink-soft);
+      line-height: 1.5;
+    }
+
+    .installed-check {
+      color: var(--green);
+      font-weight: 700;
+      font-size: 14px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    /* ── Compact open section ────────────────────────────────────────────── */
+
+    .open-section {
+      display: flex;
       align-items: center;
       gap: 12px;
-      cursor: pointer;
-      transition: border-color 0.15s, background 0.15s;
-      position: relative;
-    }
-    .drop-zone:hover,
-    .drop-zone.dragover {
-      border-color: var(--accent);
-      background: rgba(124,58,237,0.04);
-    }
-
-    .drop-zone-icon {
-      width: 48px;
-      height: 48px;
-      opacity: 0.35;
-    }
-
-    .drop-zone-title {
-      font-family: var(--serif);
-      font-size: 18px;
-      font-style: italic;
-      color: var(--ink);
-    }
-
-    .drop-zone-sub {
-      font-size: 13px;
-      color: var(--muted);
-      max-width: 26em;
+      flex-wrap: wrap;
     }
 
     .btn-open-file {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      margin-top: 4px;
-      padding: 8px 18px;
+      padding: 9px 20px;
       background: var(--gradient);
       color: #fff;
       font-family: var(--mono);
@@ -180,6 +244,31 @@
       transition: opacity 0.15s;
     }
     .btn-open-file:hover { opacity: 0.85; }
+
+    .open-drag-hint {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    /* ── Privacy note ────────────────────────────────────────────────────── */
+
+    .privacy-note {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      padding: 10px 14px;
+      background: var(--surface);
+      border-radius: var(--radius);
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .privacy-note-icon {
+      flex-shrink: 0;
+      font-size: 13px;
+      margin-top: 1px;
+    }
 
     /* Tool grid */
     .tools-label {
@@ -297,23 +386,12 @@
     .viewer-toolbar {
       display: flex;
       align-items: center;
-      gap: 8px;
-      padding: 0 10px;
-      height: 34px;
+      justify-content: flex-end;
+      padding: 0 8px;
+      height: 28px;
       background: #0f0f1a;
       border-bottom: none;
       flex-shrink: 0;
-    }
-
-    .viewer-title {
-      flex: 1;
-      font-family: var(--mono);
-      font-size: 11px;
-      letter-spacing: 0.05em;
-      color: rgba(168,168,210,0.85);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
     }
 
     .btn-close {
@@ -645,8 +723,7 @@
 
     /* ── Responsive tweaks ───────────────────────────────────────────────── */
     @media (max-width: 400px) {
-      .dash-body { padding: 16px 14px 32px; gap: 24px; }
-      .drop-zone { padding: 28px 16px; }
+      .dash-body { padding: 16px 14px 32px; gap: 20px; }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -668,27 +745,50 @@
 
     <div class="dash-body scroll">
 
-      <!-- Drop / open zone -->
-      <section>
-        <div class="drop-zone" id="drop-zone" role="button" tabindex="0" aria-label="Drop or choose a .pweb file to open">
-          <!-- globe icon -->
-          <svg class="drop-zone-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <circle cx="16" cy="16" r="13" stroke="currentColor" stroke-width="1.5"/>
-            <path d="M16 3C16 3 11 9 11 16s5 13 5 13" stroke="currentColor" stroke-width="1.5"/>
-            <path d="M16 3c0 0 5 6 5 13s-5 13-5 13" stroke="currentColor" stroke-width="1.5"/>
-            <line x1="3" y1="16" x2="29" y2="16" stroke="currentColor" stroke-width="1.5"/>
-            <path d="M4 10h24M4 22h24" stroke="currentColor" stroke-width="1.5"/>
-          </svg>
-          <div class="drop-zone-title">Open a .pweb bundle</div>
-          <p class="drop-zone-sub" id="drop-zone-sub">
-            Drag &amp; drop a .pweb file here, or choose one below
-          </p>
-          <button class="btn-open-file" id="btn-open">
-            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M6 1v7M3 5l3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M1 9v1a1 1 0 001 1h8a1 1 0 001-1V9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-            Choose .pweb file
-          </button>
+      <!-- Pre-install: shown only when app is not installed as PWA -->
+      <div class="pre-install">
+        <div class="install-banner">
+          <div class="install-banner-icon" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2v8M5 7l3 3 3-3" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/><path d="M2 12v1a1 1 0 001 1h10a1 1 0 001-1v-1" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </div>
+          <div class="install-banner-body">
+            <div class="install-banner-title">Install for the full experience</div>
+            <p class="install-banner-desc">
+              Once installed, double-clicking any <code style="font-family:var(--mono);font-size:0.85em;background:var(--border);padding:1px 4px;border-radius:3px">.pweb</code> file on your computer opens it directly in this app — no browser navigation needed.
+            </p>
+            <div class="install-banner-actions">
+              <button class="btn-install" id="btn-install" hidden>Install PortableWeb</button>
+              <span class="install-manual-hint" id="install-manual-hint">
+                Use your browser&rsquo;s address bar icon or
+                <strong>menu &rarr; Install app</strong> to install.
+              </span>
+            </div>
+          </div>
         </div>
-      </section>
+      </div>
+
+      <!-- Post-install: shown only when running as installed PWA -->
+      <div class="post-install">
+        <div class="installed-banner">
+          <span class="installed-check" aria-hidden="true">&#10003;</span>
+          <span>Double-click any <code style="font-family:var(--mono);font-size:0.85em">.pweb</code> file on your computer to open it directly in this app.</span>
+        </div>
+      </div>
+
+      <!-- Open file -->
+      <div class="open-section">
+        <button class="btn-open-file" id="btn-open">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M1.5 8.5v1.25A.75.75 0 002.25 10.5h7.5a.75.75 0 00.75-.75V8.5M6 1.5v6M3.5 5l2.5 2.5L8.5 5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Open .pweb file
+        </button>
+        <span class="open-drag-hint" id="open-drag-hint">or drag a .pweb anywhere on this window</span>
+      </div>
+
+      <!-- Privacy note -->
+      <div class="privacy-note">
+        <span class="privacy-note-icon" aria-hidden="true">&#128274;</span>
+        <span>Everything runs locally on your device. Opening, packing, validating, and generating bundles does not upload or transfer any data.</span>
+      </div>
 
       <!-- Developer tools -->
       <section>
@@ -740,8 +840,7 @@
   <!-- ── Viewer ───────────────────────────────────────────────────────────── -->
   <div id="view-viewer" class="view">
     <div class="viewer-toolbar">
-      <span class="viewer-title" id="viewer-title">bundle.pweb</span>
-      <button class="btn-close" id="btn-back" title="Close" aria-label="Close viewer">&#x2715;</button>
+      <button class="btn-close" id="btn-back" title="Back to home" aria-label="Back to home">&#x2715;</button>
     </div>
     <div class="viewer-frame-wrap">
       <iframe
@@ -1030,12 +1129,8 @@ const App = (() => {
   }
 
   function showViewer() {
-    const { manifest, sessionId, filename } = currentBundle;
-    const displayName = filename || manifest.title;
-    $('viewer-title').textContent = displayName;
-    document.title = displayName;
-    // SW at /app/sw.js has scope /app/ — bundle URLs must be under /app/bundle/
-    // so the SW can intercept them and serve files from IndexedDB.
+    const { manifest, sessionId } = currentBundle;
+    document.title = manifest.title;
     $('viewer-frame').src = `/app/bundle/${sessionId}/${manifest.entry}`;
     setView('viewer');
   }
@@ -1489,7 +1584,6 @@ portableweb pack ./   # full name</code></pre>
   function setupDragDrop() {
     let enterCount = 0;
     const overlay = $('drop-overlay');
-    const zone = $('drop-zone');
 
     const hasPweb = (dt) => {
       if (!dt) return false;
@@ -1503,14 +1597,12 @@ portableweb pack ./   # full name</code></pre>
       if (!hasPweb(e.dataTransfer)) return;
       enterCount++;
       overlay.classList.add('active');
-      zone.classList.add('dragover');
     });
 
     document.addEventListener('dragleave', (e) => {
       enterCount = Math.max(0, enterCount - 1);
       if (enterCount === 0) {
         overlay.classList.remove('active');
-        zone.classList.remove('dragover');
       }
     });
 
@@ -1532,11 +1624,37 @@ portableweb pack ./   # full name</code></pre>
     });
   }
 
+  /* ── PWA install prompt ───────────────────────────────────────────────── */
+  function setupInstallPrompt() {
+    let deferredPrompt = null;
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      const btn = $('btn-install');
+      const hint = $('install-manual-hint');
+      if (btn) { btn.hidden = false; }
+      if (hint) { hint.hidden = true; }
+    });
+
+    window.addEventListener('appinstalled', () => {
+      deferredPrompt = null;
+    });
+
+    $('btn-install')?.addEventListener('click', async () => {
+      if (!deferredPrompt) return;
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      if (outcome === 'accepted') deferredPrompt = null;
+    });
+  }
+
   /* ── Mobile hint ──────────────────────────────────────────────────────── */
   function setupMobileHint() {
     const isTouch = navigator.maxTouchPoints > 0;
     if (isTouch) {
-      $('drop-zone-sub').textContent = 'Tap the button below to choose a .pweb file from your device';
+      const hint = $('open-drag-hint');
+      if (hint) hint.textContent = 'or tap to pick a file from your device';
     }
   }
 
@@ -1545,19 +1663,6 @@ portableweb pack ./   # full name</code></pre>
     $('btn-open').addEventListener('click', async () => {
       const file = await pickFile('.pweb,application/vnd.portableweb+zip');
       if (file) openBundle(file);
-    });
-    $('drop-zone').addEventListener('click', async (e) => {
-      if (e.target !== $('btn-open') && !$('btn-open').contains(e.target)) {
-        const file = await pickFile('.pweb,application/vnd.portableweb+zip');
-        if (file) openBundle(file);
-      }
-    });
-    $('drop-zone').addEventListener('keydown', async (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        const file = await pickFile('.pweb,application/vnd.portableweb+zip');
-        if (file) openBundle(file);
-      }
     });
 
     $('btn-unpack').addEventListener('click', doUnpack);
@@ -1607,6 +1712,7 @@ portableweb pack ./   # full name</code></pre>
   function init() {
     setupFileHandling();
     setupDragDrop();
+    setupInstallPrompt();
     setupMobileHint();
     setupEvents();
     renderRecent();
