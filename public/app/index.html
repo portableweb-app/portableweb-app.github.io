@@ -386,12 +386,24 @@
     .viewer-toolbar {
       display: flex;
       align-items: center;
-      justify-content: flex-end;
-      padding: 0 8px;
+      justify-content: space-between;
+      padding: 0 10px 0 14px;
       height: 28px;
       background: #0f0f1a;
       border-bottom: none;
       flex-shrink: 0;
+      gap: 8px;
+    }
+
+    .viewer-title {
+      flex: 1;
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.04em;
+      color: rgba(168,168,210,0.75);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .btn-close {
@@ -841,6 +853,7 @@
   <!-- ── Viewer ───────────────────────────────────────────────────────────── -->
   <div id="view-viewer" class="view">
     <div class="viewer-toolbar" id="viewer-toolbar">
+      <span class="viewer-title" id="viewer-title"></span>
       <button class="btn-close" id="btn-back" title="Back to home" aria-label="Back to home">&#x2715;</button>
     </div>
     <div class="viewer-frame-wrap">
@@ -1132,9 +1145,20 @@ const App = (() => {
 
   function showViewer() {
     const { manifest, sessionId } = currentBundle;
-    document.title = manifest.title;
     const toolbar = $('viewer-toolbar');
-    if (toolbar) toolbar.style.display = openedViaFileHandler ? 'none' : 'flex';
+
+    if (openedViaFileHandler) {
+      /* Opened via OS double-click — no toolbar, window title = bundle title */
+      document.title = manifest.title;
+      if (toolbar) toolbar.style.display = 'none';
+    } else {
+      /* Opened from inside the app — show toolbar with bundle name, window = PortableWeb */
+      document.title = 'PortableWeb';
+      const titleEl = $('viewer-title');
+      if (titleEl) titleEl.textContent = manifest.title;
+      if (toolbar) toolbar.style.display = 'flex';
+    }
+
     $('viewer-frame').src = `/app/bundle/${sessionId}/${manifest.entry}`;
     setView('viewer');
   }
