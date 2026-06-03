@@ -903,6 +903,40 @@
   </form>
 </dialog>
 
+<!-- ── Pack — generate manifest dialog ───────────────────────────────────── -->
+<dialog id="dialog-pack-manifest" aria-labelledby="pm-title">
+  <div class="dialog-header">
+    <span class="dialog-title" id="pm-title">No manifest.json found</span>
+    <button class="dialog-close" data-close="dialog-pack-manifest" aria-label="Close">&times;</button>
+  </div>
+  <form id="form-pack-manifest" method="dialog">
+    <div class="dialog-body">
+      <p class="form-hint" style="margin-bottom:16px">The selected folder has no manifest.json. Fill in the details below to generate one and continue packing.</p>
+      <div class="form-row">
+        <label class="form-label" for="pm-title-input">Title</label>
+        <input class="form-input" id="pm-title-input" name="title" required placeholder="My Interactive Document">
+      </div>
+      <div class="form-row">
+        <label class="form-label" for="pm-desc">Description</label>
+        <input class="form-input" id="pm-desc" name="description" placeholder="What does this bundle do?">
+      </div>
+      <div class="form-row">
+        <label class="form-label" for="pm-author">Author</label>
+        <input class="form-input" id="pm-author" name="author" placeholder="Your name">
+      </div>
+      <div class="form-row">
+        <label class="form-label" for="pm-id">Bundle ID <span class="form-hint">(auto-generated if blank)</span></label>
+        <input class="form-input" id="pm-id" name="id" placeholder="org.example.my-bundle" pattern="[a-z0-9][a-z0-9\.\-]*">
+        <span class="form-hint">Reverse-domain identifier, e.g. org.portableweb.hello</span>
+      </div>
+    </div>
+    <div class="dialog-footer">
+      <button type="button" class="btn-ghost" data-close="dialog-pack-manifest">Cancel</button>
+      <button type="submit" class="btn-primary">Continue Packing</button>
+    </div>
+  </form>
+</dialog>
+
 <!-- ── Validation results dialog ─────────────────────────────────────────── -->
 <dialog id="dialog-validate" aria-labelledby="validate-title">
   <div class="dialog-header">
@@ -1155,6 +1189,33 @@ const App = (() => {
     showToast('Saved as ' + file.name.replace(/\.pweb$/, '.zip'));
   }
 
+  function promptForPackManifest() {
+    return new Promise((resolve) => {
+      const dlg = $('dialog-pack-manifest');
+      const form = $('form-pack-manifest');
+      form.reset();
+      let submitted = false;
+
+      function onSubmit(e) {
+        e.preventDefault();
+        submitted = true;
+        const data = Object.fromEntries(new FormData(form));
+        form.removeEventListener('submit', onSubmit);
+        dlg.close();
+        resolve(data);
+      }
+
+      function onClose() {
+        form.removeEventListener('submit', onSubmit);
+        if (!submitted) resolve(null);
+      }
+
+      form.addEventListener('submit', onSubmit);
+      dlg.addEventListener('close', onClose, { once: true });
+      dlg.showModal();
+    });
+  }
+
   async function doPack() {
     const inp = document.createElement('input');
     inp.type = 'file';
@@ -1163,17 +1224,39 @@ const App = (() => {
     const files = await new Promise(r => { inp.addEventListener('change', () => r(Array.from(inp.files))); inp.click(); });
     if (!files.length) return;
 
+    const rootDir = files[0].webkitRelativePath.split('/')[0];
+    const normalized = files
+      .map(f => ({ file: f, path: f.webkitRelativePath.slice(rootDir.length + 1) }))
+      .filter(f => f.path);
+
+    let generatedManifest = null;
+
+    if (!normalized.some(f => f.path === 'manifest.json')) {
+      const data = await promptForPackManifest();
+      if (!data) return;
+
+      const title = data.title.trim();
+      const description = data.description ? data.description.trim() : '';
+      const author = data.author ? data.author.trim() : '';
+      const rawId = data.id ? data.id.trim() : '';
+      const bundleId = rawId || `org.portableweb.${title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9\-]/g, '')}`;
+
+      const manifest = {
+        spec_version: '0.1',
+        id: bundleId,
+        version: '1.0.0',
+        title,
+        entry: 'index.html',
+        created: new Date().toISOString().split('T')[0],
+        ...(description && { description }),
+        ...(author && { author: { name: author } }),
+      };
+
+      generatedManifest = JSON.stringify(manifest, null, 2);
+    }
+
     showLoading('Packing bundle…');
     try {
-      const rootDir = files[0].webkitRelativePath.split('/')[0];
-      const normalized = files
-        .map(f => ({ file: f, path: f.webkitRelativePath.slice(rootDir.length + 1) }))
-        .filter(f => f.path);
-
-      if (!normalized.some(f => f.path === 'manifest.json')) {
-        throw new Error('Folder must contain a manifest.json file');
-      }
-
       const zip = new JSZip();
       /* mimetype must be first, uncompressed — EPUB convention */
       zip.file('mimetype', 'application/vnd.portableweb+zip', { compression: 'STORE' });
@@ -1181,6 +1264,10 @@ const App = (() => {
       for (const { file, path } of normalized) {
         if (path === 'mimetype') continue;
         zip.file(path, await file.arrayBuffer());
+      }
+
+      if (generatedManifest) {
+        zip.file('manifest.json', generatedManifest);
       }
 
       const blob = await zip.generateAsync({ type: 'blob', mimeType: 'application/vnd.portableweb+zip' });
