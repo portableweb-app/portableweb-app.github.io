@@ -1,5 +1,5 @@
 /* PortableWeb PWA service worker */
-const CACHE = 'portableweb-v15';
+const CACHE = 'portableweb-v16';
 const DB_NAME = 'portableweb';
 const STORE = 'bundle-files';
 
@@ -9,6 +9,7 @@ const SHELL = [
   '/app/app.js',
   '/app/manifest.json',
   '/app/jszip.min.js',
+  '/fonts/fonts.css',
   '/icons/icon.svg',
   '/icons/icon-192.png',
   '/icons/icon-512.png',
