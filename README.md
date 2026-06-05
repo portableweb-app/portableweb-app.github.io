@@ -1,6 +1,6 @@
 # @portableweb/web
 
-Node.js server powering **portableweb.org** — marketing homepage at `/` and browser-based PWA viewer at `/app/`.
+Node.js server powering **portableweb.org** — homepage at `/` and browser-based PWA viewer at `/app/`.
 
 ## What's inside
 
