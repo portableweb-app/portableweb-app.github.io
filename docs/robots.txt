@@ -1,0 +1,18 @@
+User-agent: *
+Allow: /
+
+# Be explicit that AI crawlers are welcome to index this open standard.
+User-agent: GPTBot
+Allow: /
+User-agent: ClaudeBot
+Allow: /
+User-agent: anthropic-ai
+Allow: /
+User-agent: Google-Extended
+Allow: /
+User-agent: PerplexityBot
+Allow: /
+User-agent: CCBot
+Allow: /
+
+Sitemap: https://portableweb.org/sitemap.xml

@@ -1,0 +1,39 @@
+# PortableWeb
+
+> PortableWeb is an open file format for interactive web content. It is not an AI tool or AI platform and does not generate content — it is the format that content (built by hand or with any AI tool) is saved and shared as. A PortableWeb bundle (`.pweb`) packages HTML, CSS, JavaScript, and media into a single self-contained, sandboxed file that a compatible viewer opens on any platform — entirely offline, with no server, no web origin, no app store, and no browser required. Media type: `application/vnd.portableweb+zip`.
+
+## The problem it solves
+
+AI-assisted tools now generate interactive web content — games, simulations, presentations, reports, 3D experiences — in minutes, by the million. None of it has a natural place to live beyond a fragile, expiring URL. No prior format treats interactive web content as a portable, self-contained, immediately runnable unit: deploying needs a server; app stores need accounts and review; PDF flattens interactivity; EPUB is a book/reading model; Web Bundles were a transport optimization that never shipped; the Web App Manifest requires a live web origin. PortableWeb is that missing unit.
+
+## How it works
+
+1. Build something with web technology — by hand, or by asking any AI tool (a game, a 3D periodic table, a photo album, an interactive report).
+2. The tool generates it.
+3. Pack it as a `.pweb` file using a PortableWeb viewer/packer.
+4. Run it everywhere — phone, Mac, PC — or share it with a friend. A web app, treated like a document.
+5. As models mature, they will emit `.pweb` files directly, instantly usable everywhere.
+
+## Design principles
+
+- Self-contained: a bundle carries everything it needs; no CDN dependency.
+- Sandboxed: no filesystem access, network off by default, storage scoped per bundle; permissions declared in the manifest and enforced by the viewer.
+- Archival: each spec version freezes a stable subset of the web platform, so a bundle renders identically in any compatible viewer indefinitely.
+- Owned: a bundle is a file — no host, no account, no platform.
+
+## Bundle anatomy
+
+A `.pweb` is a ZIP archive containing: `mimetype` (required, first, uncompressed), `manifest.json` (required: id, version, title, entry, permissions), `index.html` (required entry), and optional `assets/`, `media/`, `scripts/`, `styles/`.
+
+## Standards & status
+
+- W3C Portable Web Content Format (PortableWeb) Community Group: https://www.w3.org/community/portableweb/
+- IETF Internet-Draft (draft-selvaraj-portableweb-format): https://datatracker.ietf.org/doc/draft-selvaraj-portableweb-format/
+- Status: v0.1 draft. Container and manifest defined; sandbox, storage, signing, and an offline peer-to-peer channel (Bluetooth / Wi-Fi Direct) are forthcoming.
+
+## Links
+
+- Website: https://portableweb.org/
+- Web app (open, pack, validate, scaffold): https://portableweb.org/app/
+- Specification & examples: https://github.com/portableweb/spec
+- Organization: https://github.com/portableweb

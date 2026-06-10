@@ -3,659 +3,163 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>PortableWeb — Self-contained interactive documents</title>
-  <meta name="description" content="PortableWeb is an open file format for self-contained, sandboxed, interactive documents. Like PDF, but interactive. Like a webpage, but a file you own.">
+  <title>PortableWeb — A portable file format for interactive web content</title>
+  <meta name="description" content="PortableWeb is an open file format for interactive web content. One .pweb file — built by hand or with any AI tool — that runs on any device, fully offline, with no server, no origin, and no app store.">
+  <link rel="canonical" href="https://portableweb.org/">
+  <meta name="author" content="PortableWeb">
+  <meta name="theme-color" content="#0b0b15">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+  <meta name="keywords" content="PortableWeb, .pweb, portable web format, interactive web content, offline web app, self-contained web, sandboxed web content, AI-generated content, web bundle, digital archival, IETF Internet-Draft, W3C Community Group, application/vnd.portableweb+zip">
 
-  <meta property="og:title" content="PortableWeb">
-  <meta property="og:description" content="An open file format for self-contained, sandboxed, interactive documents. Like PDF, but interactive.">
-  <meta property="og:url" content="https://portableweb.org">
+  <!-- Open Graph -->
+  <meta property="og:site_name" content="PortableWeb">
+  <meta property="og:title" content="PortableWeb — the missing file format for the interactive web">
+  <meta property="og:description" content="An open file format for interactive web content. One .pweb file — built by hand or with any AI tool — that runs on any device, fully offline, with no server, no origin, and no app store.">
+  <meta property="og:url" content="https://portableweb.org/">
   <meta property="og:type" content="website">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:image" content="https://portableweb.org/icons/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="PortableWeb — one .pweb file that runs anywhere, offline. A W3C Community Group and IETF Internet-Draft.">
+
+  <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="PortableWeb — the missing file format for the interactive web">
+  <meta name="twitter:description" content="One .pweb file that runs on any device, fully offline — no server, no origin, no app store. In community discussion at the W3C; drafted at the IETF.">
+  <meta name="twitter:image" content="https://portableweb.org/icons/og-image.png">
 
   <link rel="icon" href="/icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
 
-  <link rel="stylesheet" href="/fonts/fonts.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
-  <style>
-    :root {
-      --ink:           #0f0f1a;
-      --ink-soft:      #2d2d50;
-      --paper:         #f7f8ff;
-      --paper-shadow:  #edeeff;
-      --paper-darker:  #e2e4f8;
-      --accent:        #7c3aed;
-      --accent-soft:   #9f67f5;
-      --rule:          rgba(15,15,26,0.18);
-      --muted:         #6565a0;
-      --muted-soft:    #9090b8;
-      --gradient:      linear-gradient(135deg, #7c3aed 0%, #2563eb 46%, #20d6d2 100%);
-      --serif:         "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
-      --sans:          "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
-      --mono:          "Geist Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, "Liberation Mono", monospace;
-    }
+  <link rel="stylesheet" href="site.css">
+  <link rel="stylesheet" href="flow.css">
 
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --ink:           #e8e8ff;
-        --ink-soft:      #b0b0d8;
-        --paper:         #08080f;
-        --paper-shadow:  #0f0f1e;
-        --paper-darker:  #181828;
-        --accent:        #a78bfa;
-        --accent-soft:   #7c3aed;
-        --rule:          rgba(232,232,255,0.15);
-        --muted:         #7070a8;
-        --muted-soft:    #454570;
+  <!-- Structured data: helps search engines and AI models understand what PortableWeb is and its standing. -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://portableweb.org/#org",
+        "name": "PortableWeb",
+        "alternateName": "Portable Web Content Format",
+        "url": "https://portableweb.org/",
+        "logo": "https://portableweb.org/icons/icon-512.png",
+        "description": "An open project defining PortableWeb (.pweb), a portable file format for self-contained, sandboxed, offline-capable interactive web content.",
+        "sameAs": [
+          "https://github.com/portableweb",
+          "https://www.w3.org/community/portableweb/",
+          "https://datatracker.ietf.org/doc/draft-selvaraj-portableweb-format/"
+        ]
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://portableweb.org/#website",
+        "url": "https://portableweb.org/",
+        "name": "PortableWeb",
+        "inLanguage": "en",
+        "publisher": { "@id": "https://portableweb.org/#org" }
+      },
+      {
+        "@type": "DefinedTerm",
+        "@id": "https://portableweb.org/#pweb",
+        "name": "PortableWeb (.pweb)",
+        "alternateName": ".pweb",
+        "termCode": "application/vnd.portableweb+zip",
+        "url": "https://portableweb.org/",
+        "description": "An open file format that packages the HTML, CSS, JavaScript, and media of an interactive experience into a single self-contained, sandboxed bundle. A .pweb file is opened by a compatible viewer on any platform, entirely offline, without a server, a web origin, an app store, or a browser. It is content-model agnostic: a bundle may hold a game, a presentation, a simulation, a 3D experience, a scientific model, a report, or a book.",
+        "inDefinedTermSet": "https://datatracker.ietf.org/doc/draft-selvaraj-portableweb-format/"
+      },
+      {
+        "@type": "TechArticle",
+        "@id": "https://portableweb.org/#article",
+        "headline": "PortableWeb — the missing file format for the interactive web",
+        "description": "Interactive web content — built by hand or with any AI tool — saved as one .pweb file that runs anywhere, offline. PortableWeb is a format, not an AI platform.",
+        "inLanguage": "en",
+        "image": "https://portableweb.org/icons/og-image.png",
+        "datePublished": "2026-06-09",
+        "dateModified": "2026-06-09",
+        "author": { "@id": "https://portableweb.org/#org" },
+        "publisher": { "@id": "https://portableweb.org/#org" },
+        "about": { "@id": "https://portableweb.org/#pweb" },
+        "isPartOf": { "@id": "https://portableweb.org/#website" },
+        "mainEntityOfPage": "https://portableweb.org/"
+      },
+      {
+        "@type": "SoftwareApplication",
+        "@id": "https://portableweb.org/#app",
+        "name": "PortableWeb App",
+        "description": "A browser-based app to open and render any .pweb bundle, pack a project folder into a bundle, validate one against the spec, or scaffold a new project. Runs entirely on-device.",
+        "applicationCategory": "DeveloperApplication",
+        "operatingSystem": "Web browser",
+        "url": "https://portableweb.org/app/",
+        "isAccessibleForFree": true,
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+        "publisher": { "@id": "https://portableweb.org/#org" }
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://portableweb.org/#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "What is PortableWeb?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "PortableWeb is an open file format for interactive web content. A PortableWeb bundle (.pweb) packages HTML, CSS, JavaScript, and media into a single file that a compatible viewer opens in a sandboxed window on any platform, entirely offline, without a server, a web origin, an app store, or a browser."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What is a .pweb file?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "A .pweb file is a PortableWeb bundle: a ZIP archive (media type application/vnd.portableweb+zip) containing a mimetype marker, a manifest.json, an index.html entry point, and any assets. It behaves like a document — you can save, copy, email, archive, or AirDrop it — and it runs the same offline, on any compatible viewer, indefinitely."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How is PortableWeb different from PDF, PWA, or EPUB?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "PDF is portable and archival but flattens interactivity. A PWA is interactive but tied to a live server and web origin. EPUB is constrained to a book and reading model and cannot represent a game or real-time simulation. PortableWeb is fully interactive, always offline, self-contained, and requires no server or origin — it sits between the static document and the live web app."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Is PortableWeb a standard?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Not yet — it is an open proposal being developed in public. Its container and manifest are specified in an IETF Internet-Draft (draft-selvaraj-portableweb-format), and the broader format — sandbox, storage, signing, and an offline peer-to-peer channel — is in community discussion in the W3C Portable Web Content Format Community Group, which anyone can join."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Is PortableWeb an AI tool or AI platform?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. PortableWeb is a file format, not an AI product. It does not generate content. People build interactive web content however they like — by hand, or with any AI tool — and PortableWeb defines the portable .pweb file that the result is saved and shared as. It is independent of any AI vendor or model."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Why does PortableWeb matter for AI-generated content?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "AI tools now generate interactive web content — games, simulations, presentations, reports, 3D experiences — in minutes, by the million. None of it has a natural place to live beyond a fragile URL. PortableWeb gives each artifact a portable, ownable file. As models mature, they will be able to emit .pweb files directly, instantly usable across every platform."
+            }
+          }
+        ]
       }
-    }
-
-    * { box-sizing: border-box; }
-
-    html { scroll-behavior: smooth; }
-
-    html, body {
-      margin: 0;
-      padding: 0;
-      background: var(--paper);
-      color: var(--ink);
-      font-family: var(--serif);
-      font-size: 18px;
-      line-height: 1.6;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-    }
-
-    body {
-      background-image:
-        radial-gradient(at 15% 25%, rgba(0,0,0,0.025) 0%, transparent 50%),
-        radial-gradient(at 85% 75%, rgba(0,0,0,0.025) 0%, transparent 50%);
-      background-attachment: fixed;
-      min-height: 100vh;
-    }
-
-    a {
-      color: var(--accent);
-      text-decoration: none;
-      border-bottom: 1px solid currentColor;
-      transition: opacity 0.15s ease;
-    }
-    a:hover { opacity: 0.7; }
-
-    /* ---------- Scrollbar ---------- */
-    * { scrollbar-width: thin; scrollbar-color: var(--muted) transparent; }
-    ::-webkit-scrollbar { width: 13px; height: 13px; }
-    ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb {
-      background-color: var(--muted);
-      border-radius: 10px;
-      border: 3px solid var(--paper);
-      background-clip: padding-box;
-    }
-    ::-webkit-scrollbar-thumb:hover { background-color: var(--ink-soft); }
-    ::-webkit-scrollbar-corner { background: transparent; }
-
-    code, pre {
-      font-family: var(--mono);
-      font-size: 0.85em;
-    }
-
-    /* ---------- Layout ---------- */
-
-    .wrap {
-      max-width: 880px;
-      margin: 0 auto;
-      padding: 0 clamp(1.25rem, 4vw, 2.5rem);
-    }
-
-    /* ---------- Header ---------- */
-
-    header.site {
-      padding: 2rem 0 1.5rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-family: var(--mono);
-      font-size: 0.7rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--muted);
-      gap: 1rem;
-      flex-wrap: wrap;
-    }
-
-    .mark {
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-      color: var(--ink);
-      border-bottom: none;
-    }
-
-    .mark-glyph {
-      width: 24px;
-      height: 24px;
-      flex-shrink: 0;
-      color: var(--ink);
-      display: block;
-    }
-
-    .mark-word {
-      font-family: "Geist", var(--sans);
-      font-size: 1.05rem;
-      font-weight: 600;
-      letter-spacing: -0.02em;
-      text-transform: none;
-      color: var(--ink);
-      line-height: 1;
-    }
-
-    nav.site {
-      display: flex;
-      gap: 1.5rem;
-    }
-
-    nav.site a {
-      color: var(--muted);
-      border-bottom: none;
-    }
-    nav.site a:hover { color: var(--ink); }
-
-    nav.site a.nav-app {
-      color: var(--ink);
-      border: 1px solid var(--rule);
-      padding: 0.34rem 0.75rem;
-      border-radius: 6px;
-      white-space: nowrap;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
-    }
-    nav.site a.nav-app:hover { background: var(--ink); color: var(--paper); border-color: var(--ink); opacity: 1; }
-    nav.site a.nav-app svg { transition: transform 0.15s ease; }
-    nav.site a.nav-app:hover svg { transform: translateX(2px); }
-
-    /* ---------- Hero ---------- */
-
-    .hero {
-      padding: clamp(3rem, 10vh, 7rem) 0 clamp(3rem, 8vh, 5rem);
-    }
-
-    .status {
-      display: inline-flex;
-      align-items: center;
-      white-space: nowrap;
-      gap: 0.5rem;
-      padding: 0.35rem 0.8rem;
-      border: 1px solid var(--rule);
-      font-family: var(--mono);
-      font-size: 0.65rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--ink);
-      margin-bottom: 2rem;
-    }
-
-    .status::before {
-      content: "";
-      display: inline-block;
-      width: 6px; height: 6px;
-      border-radius: 50%;
-      background: var(--accent);
-      animation: pulse 2.4s infinite;
-    }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50%      { opacity: 0.4; }
-    }
-
-    h1.hero-title {
-      font-family: var(--serif);
-      font-weight: 600;
-      font-style: normal;
-      font-size: clamp(2.75rem, 8vw, 5rem);
-      line-height: 1.02;
-      letter-spacing: -0.025em;
-      margin: 0 0 1.5rem;
-      max-width: 12ch;
-    }
-
-    h1.hero-title .accent {
-      background: var(--gradient);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .hero-lede {
-      font-size: clamp(1.15rem, 2.2vw, 1.4rem);
-      line-height: 1.5;
-      max-width: 36em;
-      margin: 0 0 2.5rem;
-      color: var(--ink-soft);
-    }
-
-    .cta-row {
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-      align-items: center;
-    }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.7rem 1.3rem;
-      font-family: var(--mono);
-      font-size: 0.75rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      border: 1px solid var(--ink);
-      color: var(--ink);
-      background: transparent;
-      border-bottom: 1px solid var(--ink);
-      transition: all 0.18s ease;
-    }
-    .btn:hover { background: var(--ink); color: var(--paper); opacity: 1; }
-
-    .btn.primary {
-      background: var(--gradient);
-      border-color: transparent;
-      color: #fff;
-    }
-    .btn.primary:hover { opacity: 0.88; color: #fff; }
-
-    /* ---------- Section primitives ---------- */
-
-    section.block {
-      padding: clamp(3rem, 7vh, 5rem) 0;
-      border-top: 1px solid var(--rule);
-    }
-
-    .eyebrow {
-      font-family: var(--mono);
-      font-size: 0.7rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin: 0 0 1.5rem;
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-    }
-
-    .eyebrow::before {
-      content: "";
-      width: 24px; height: 2px;
-      background: var(--gradient);
-      border-radius: 2px;
-    }
-
-    h2 {
-      font-family: var(--serif);
-      font-weight: 600;
-      font-style: normal;
-      font-size: clamp(1.85rem, 4vw, 2.5rem);
-      line-height: 1.15;
-      letter-spacing: -0.015em;
-      margin: 0 0 1.5rem;
-      max-width: 22ch;
-    }
-
-    h3 {
-      font-family: var(--serif);
-      font-weight: 500;
-      font-size: 1.25rem;
-      margin: 0 0 0.5rem;
-      color: var(--ink);
-    }
-
-    p { margin: 0 0 1rem; max-width: 36em; }
-
-    /* ---------- Anatomy diagram ---------- */
-
-    .anatomy {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 0;
-      margin: 2rem 0 1rem;
-      border: 1px solid var(--rule);
-      background: var(--paper-shadow);
-      max-width: 580px;
-      font-family: var(--mono);
-      font-size: 0.85rem;
-    }
-
-    .anatomy-row {
-      display: grid;
-      grid-template-columns: 14ch 1fr;
-      gap: 1rem;
-      padding: 0.85rem 1.25rem;
-      border-bottom: 1px solid var(--rule);
-      align-items: baseline;
-    }
-    .anatomy-row:last-child { border-bottom: none; }
-
-    .anatomy-row.header {
-      background: var(--ink);
-      color: var(--paper);
-      font-size: 0.65rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      padding: 0.5rem 1.25rem;
-    }
-
-    .anatomy-row .filename { color: var(--ink); font-weight: 600; }
-    .anatomy-row .filename .req { color: var(--accent); font-weight: 400; }
-    .anatomy-row .desc { color: var(--muted); font-family: var(--serif); font-size: 1rem; line-height: 1.4; }
-
-    .anatomy-row.header .filename,
-    .anatomy-row.header .desc { color: var(--paper); font-family: var(--mono); font-size: 0.65rem; }
-
-    /* ---------- Pillars ---------- */
-
-    .pillars {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 2rem;
-      margin-top: 2rem;
-    }
-    @media (max-width: 540px) { .pillars { grid-template-columns: 1fr; } }
-
-    .pillar h3::before {
-      content: "";
-      display: block;
-      width: 36px;
-      height: 2px;
-      background: var(--gradient);
-      border-radius: 2px;
-      margin-bottom: 1rem;
-    }
-
-    .pillar p { color: var(--ink-soft); font-size: 0.95rem; }
-
-    /* ---------- Use cases ---------- */
-
-    .use-cases {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 1px;
-      background: var(--rule);
-      border: 1px solid var(--rule);
-      margin-top: 2rem;
-    }
-
-    .use-case {
-      background: var(--paper);
-      padding: 1.5rem 1.25rem;
-    }
-
-    .use-case .num {
-      font-family: var(--mono);
-      font-size: 0.7rem;
-      letter-spacing: 0.18em;
-      color: var(--muted);
-      margin-bottom: 0.75rem;
-    }
-
-    .use-case h3 { font-size: 1.1rem; font-style: normal; }
-    .use-case p { font-size: 0.9rem; color: var(--ink-soft); margin: 0; }
-
-    /* ---------- Comparison ---------- */
-
-    .comparison {
-      margin-top: 2rem;
-      overflow-x: auto;
-    }
-
-    .comparison table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.9rem;
-      min-width: 540px;
-    }
-
-    .comparison th, .comparison td {
-      text-align: left;
-      padding: 0.85rem 1rem;
-      border-bottom: 1px solid var(--rule);
-      vertical-align: top;
-    }
-
-    .comparison th {
-      font-family: var(--mono);
-      font-size: 0.65rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--muted);
-      font-weight: 400;
-      border-bottom: 1px solid var(--rule);
-    }
-
-    .comparison td.format {
-      font-family: var(--mono);
-      font-size: 0.8rem;
-      color: var(--ink);
-      letter-spacing: 0.05em;
-    }
-    .comparison td.format.us { color: var(--accent); }
-    .comparison td p { margin: 0; font-size: 0.9rem; color: var(--ink-soft); }
-
-    /* ---------- Roadmap ---------- */
-
-    .roadmap {
-      display: grid;
-      gap: 1rem;
-      margin-top: 2rem;
-    }
-
-    .roadmap-item {
-      display: grid;
-      grid-template-columns: 8ch 1fr;
-      gap: 1.5rem;
-      padding: 1rem 0;
-      border-bottom: 1px solid var(--paper-darker);
-      align-items: baseline;
-    }
-    .roadmap-item:last-child { border-bottom: none; }
-
-    .roadmap-version {
-      font-family: var(--mono);
-      font-size: 0.85rem;
-      color: var(--accent);
-      letter-spacing: 0.05em;
-    }
-    .roadmap-version.future { color: var(--muted); }
-
-    .roadmap-body h3 { font-size: 1rem; margin-bottom: 0.25rem; font-style: normal; }
-    .roadmap-body p { margin: 0; font-size: 0.9rem; color: var(--ink-soft); }
-
-    /* ---------- Get involved ---------- */
-
-    .links-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 1rem;
-      margin-top: 2rem;
-    }
-
-    .link-card {
-      display: block;
-      padding: 1.5rem 1.25rem;
-      border: 1px solid var(--rule);
-      color: var(--ink);
-      transition: all 0.18s ease;
-      border-bottom: 1px solid var(--rule);
-    }
-    .link-card:hover { background: var(--ink); color: var(--paper); opacity: 1; }
-    .link-card:hover .link-arrow { transform: translateX(3px); }
-    .link-card:hover .link-desc { color: var(--paper-shadow); }
-
-    .link-card-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 0.5rem;
-    }
-    .link-title { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase; }
-    .link-arrow { transition: transform 0.18s ease; }
-    .link-desc { font-size: 0.9rem; color: var(--ink-soft); font-family: var(--serif); }
-
-    /* ---------- Viewer section ---------- */
-
-    .viewer-grid {
-      display: grid;
-      grid-template-columns: 1.05fr 0.95fr;
-      gap: 2.75rem;
-      align-items: start;
-      margin-top: 2.25rem;
-    }
-    @media (max-width: 760px) {
-      .viewer-grid { grid-template-columns: 1fr; gap: 2rem; }
-    }
-
-    .viewer-caps {
-      list-style: none;
-      padding: 0;
-      margin: 0 0 2rem;
-      display: flex;
-      flex-direction: column;
-    }
-    .viewer-caps li {
-      display: flex;
-      gap: 0.85rem;
-      padding: 0.95rem 0;
-      border-bottom: 1px solid var(--paper-darker);
-      align-items: flex-start;
-    }
-    .viewer-caps li:last-child { border-bottom: none; }
-    .vc-icon {
-      width: 32px; height: 32px;
-      border-radius: 9px;
-      background: var(--paper-shadow);
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0;
-      color: var(--accent);
-      margin-top: 1px;
-    }
-    .vc-title { display: block; font-weight: 600; font-size: 0.98rem; color: var(--ink); letter-spacing: -0.01em; }
-    .vc-desc { display: block; font-size: 0.9rem; color: var(--ink-soft); line-height: 1.5; margin-top: 0.12rem; }
-    .vc-desc code { font-family: var(--mono); font-size: 0.82em; }
-
-    .viewer-cta {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 0.95rem;
-    }
-    .viewer-install-note {
-      font-size: 0.85rem;
-      color: var(--muted);
-      max-width: 34em;
-      margin: 0;
-    }
-
-    /* App preview mock */
-    .app-mock {
-      border: 1px solid var(--rule);
-      border-radius: 14px;
-      overflow: hidden;
-      display: flex;
-      height: 360px;
-      background: var(--paper);
-      box-shadow: 0 18px 50px rgba(15,15,26,0.16);
-    }
-    .mock-rail {
-      width: 44%;
-      max-width: 168px;
-      background: #0c0c16;
-      padding: 14px 10px;
-      display: flex;
-      flex-direction: column;
-      gap: 3px;
-      position: relative;
-    }
-    .mock-rail::before {
-      content: "";
-      position: absolute; top: 0; left: 0; right: 0; height: 2px;
-      background: var(--gradient);
-    }
-    .mock-brand { display: flex; align-items: center; gap: 7px; color: #e8e8ff; padding: 4px 6px 10px; }
-    .mock-brand svg { width: 16px; height: 16px; }
-    .mock-brand .mb-word { font-family: var(--sans); font-size: 12px; font-weight: 600; letter-spacing: -0.02em; }
-    .mock-label { font-family: var(--mono); font-size: 7.5px; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(168,168,210,0.5); padding: 9px 7px 4px; }
-    .mock-item { display: flex; align-items: center; gap: 8px; padding: 6px 7px; border-radius: 6px; color: #c7c7e4; font-family: var(--sans); font-size: 10.5px; }
-    .mock-item .mi-ic { width: 16px; height: 16px; border-radius: 4px; background: rgba(168,168,210,0.13); flex-shrink: 0; }
-    .mock-work { flex: 1; display: flex; flex-direction: column; background: var(--paper); }
-    .mock-topbar { height: 28px; border-bottom: 1px solid var(--rule); display: flex; align-items: center; padding: 0 12px; }
-    .mock-crumb { font-family: var(--mono); font-size: 8px; letter-spacing: 0.06em; color: var(--muted); }
-    .mock-body { flex: 1; display: flex; align-items: center; justify-content: center; padding: 16px; }
-    .mock-hero {
-      width: 100%;
-      border: 1.5px dashed var(--rule);
-      border-radius: 12px;
-      background: var(--paper-shadow);
-      padding: 20px 12px;
-      text-align: center;
-      display: flex; flex-direction: column; align-items: center; gap: 6px;
-    }
-    .mock-hero .mh-glyph { width: 32px; height: 32px; border-radius: 9px; background: var(--paper); border: 1px solid var(--rule); display: flex; align-items: center; justify-content: center; color: var(--ink); }
-    .mock-hero .mh-glyph svg { width: 17px; height: 17px; }
-    .mock-hero .mh-title { font-family: var(--sans); font-weight: 600; font-size: 12px; color: var(--ink); white-space: nowrap; }
-    .mock-hero .mh-sub { font-family: var(--sans); font-size: 8.5px; color: var(--muted); }
-    .mock-hero .mh-btn { margin-top: 5px; padding: 6px 13px; border-radius: 7px; background: var(--gradient); color: #fff; font-family: var(--sans); font-size: 9.5px; font-weight: 600; white-space: nowrap; }
-    @media (max-width: 760px) { .app-mock { height: 320px; } }
-
-    /* ---------- Footer ---------- */
-
-    footer {
-      padding: 4rem 0 3rem;
-      border-top: 1px solid var(--rule);
-      margin-top: 4rem;
-      font-family: var(--mono);
-      font-size: 0.7rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--muted);
-    }
-
-    .footer-grid {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-      gap: 2rem;
-      flex-wrap: wrap;
-    }
-
-    .footer-meta { display: flex; flex-direction: column; gap: 0.4rem; }
-    .footer-meta a { color: var(--muted); border-bottom: 1px solid transparent; }
-    .footer-meta a:hover { color: var(--ink); border-bottom-color: currentColor; }
-
-    /* ---------- Reduced motion ---------- */
-
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after { animation: none !important; transition: none !important; }
-      html { scroll-behavior: auto; }
-    }
-
-    /* ---------- Small screens ---------- */
-
-    @media (max-width: 600px) {
-      header.site { padding: 1.75rem 0 1.25rem; gap: 0.75rem 1rem; }
-      /* Collapse in-page section anchors; keep GitHub + the Open app CTA. */
-      nav.site { gap: 1rem; align-items: center; }
-      nav.site a[href^="#"] { display: none; }
-      nav.site a.nav-app { font-size: 0.7rem; }
-    }
-
-    @media (max-width: 540px) {
-      nav.site { gap: 0.9rem; }
-      .anatomy-row { grid-template-columns: 1fr; gap: 0.25rem; }
-      .roadmap-item { grid-template-columns: 1fr; gap: 0.4rem; }
-    }
-  </style>
+    ]
+  }
+  </script>
 </head>
 
 <body>
@@ -673,67 +177,270 @@
       <span class="mark-word">PortableWeb</span>
     </a>
     <nav class="site">
-      <a href="#what">What</a>
+      <a href="#problem">Problem</a>
       <a href="#anatomy">Anatomy</a>
       <a href="#viewer">Viewer</a>
-      <a href="#roadmap">Roadmap</a>
-      <a href="https://github.com/portableweb" target="_blank" rel="noopener noreferrer">GitHub</a>
+      <a href="#standards">Standards</a>
+      <a href="https://github.com/portableweb">GitHub</a>
       <a class="nav-app" href="/app/">Open app <svg width="11" height="11" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M4 10l6-6M5 4h5v5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg></a>
     </nav>
   </header>
 
   <!-- Hero -->
   <section class="hero">
-    <div class="status">Spec v0.1 &middot; Draft</div>
-    <h1 class="hero-title">
-      Interactive documents,<br>
-      built to <span class="accent">last</span>.
-    </h1>
+    <div class="status">W3C Community Group &middot; IETF Internet-Draft</div>
+    <h1 class="hero-title">The missing file format for the <span class="accent">interactive web.</span></h1>
     <p class="hero-lede">
-      PortableWeb is an open file format for self-contained, sandboxed,
-      interactive documents. Like PDF, but interactive. Like a webpage,
-      but a file you own.
+      Games, simulations, presentations, and 3D experiences are now built in minutes &mdash;
+      by hand or with any AI tool &mdash; and have nowhere to live but a fragile, expiring URL.
+      PortableWeb gives each one a home: a single <code>.pweb</code> file that runs on any
+      device, fully offline &mdash; no server, no web origin, no app store.
+      <strong>And as AI models mature, they&rsquo;ll generate <code>.pweb</code> directly</strong> &mdash;
+      a finished, portable file, instantly usable everywhere.
     </p>
     <div class="cta-row">
-      <a class="btn primary" href="/app/">
-        Open the web app &rarr;
+      <a class="btn primary" href="/app/">Open the web app &rarr;</a>
+      <a class="btn" href="https://github.com/portableweb/spec">Read the spec</a>
+    </div>
+
+    <!-- ============ HERO ANIMATION (centerpiece) ============ -->
+    <div class="flowstage" id="flow" role="img"
+         aria-label="The PortableWeb loop: you ask an AI to build interactive web content, it is generated, you pack it as a single .pweb file, and it runs everywhere — phone, Mac, PC, or shared with a friend.">
+      <div class="flow-head">
+        <div class="flow-head-text">
+          <span class="flow-kicker">The PortableWeb loop</span>
+          <h2 class="flow-title">Ask. Build. Pack. <span class="grad">Run anywhere.</span></h2>
+        </div>
+        <button class="flow-toggle" type="button" aria-label="Pause or play the animation">
+          <span class="ico-pause" aria-hidden="true">&#10073;&#10073;</span>
+          <span class="ico-play" aria-hidden="true">&#9654;</span>
+          <span class="tog-word">Pause</span>
+        </button>
+      </div>
+
+      <div class="flow-pipe">
+        <div class="flow-track"><span class="flow-pulse"></span></div>
+
+        <!-- 1 · Ask -->
+        <div class="flow-node is-active" data-stage="1">
+          <div class="node-card ask">
+            <div class="ask-head"><span class="dot"></span> YOU</div>
+            <p class="ask-prompt"><span id="promptText">Build me an interactive 3D periodic table.</span><span class="caret"></span></p>
+          </div>
+          <div class="node-label">01 &middot; Ask any AI</div>
+        </div>
+
+        <!-- 2 · Build -->
+        <div class="flow-node" data-stage="2">
+          <div class="node-card build">
+            <div class="win-bar"><span></span><span></span><span></span><em>any AI tool</em></div>
+            <div class="win-body">
+              <!-- periodic table -->
+              <div class="artifact active" data-ex="0">
+                <svg viewBox="0 0 160 116" aria-hidden="true">
+                  <g transform="translate(80,58)"><g transform="skewX(-12) scale(1,0.82)">
+                    <g fill="#2563eb">
+                      <rect x="-72" y="-42" width="14" height="14" rx="2"></rect><rect x="-55" y="-42" width="14" height="14" rx="2"></rect><rect x="-38" y="-42" width="14" height="14" rx="2"></rect><rect x="-21" y="-42" width="14" height="14" rx="2"></rect><rect x="-4" y="-42" width="14" height="14" rx="2"></rect><rect x="13" y="-42" width="14" height="14" rx="2"></rect><rect x="30" y="-42" width="14" height="14" rx="2"></rect><rect x="47" y="-42" width="14" height="14" rx="2"></rect>
+                      <rect x="-72" y="-25" width="14" height="14" rx="2"></rect><rect x="-55" y="-25" width="14" height="14" rx="2"></rect><rect x="-38" y="-25" width="14" height="14" rx="2"></rect><rect x="-21" y="-25" width="14" height="14" rx="2"></rect><rect x="-4" y="-25" width="14" height="14" rx="2"></rect><rect x="13" y="-25" width="14" height="14" rx="2"></rect><rect x="30" y="-25" width="14" height="14" rx="2"></rect><rect x="47" y="-25" width="14" height="14" rx="2"></rect>
+                      <rect x="-72" y="-8" width="14" height="14" rx="2"></rect><rect x="-55" y="-8" width="14" height="14" rx="2"></rect><rect x="-38" y="-8" width="14" height="14" rx="2"></rect><rect x="-21" y="-8" width="14" height="14" rx="2"></rect><rect x="-4" y="-8" width="14" height="14" rx="2"></rect><rect x="13" y="-8" width="14" height="14" rx="2"></rect><rect x="30" y="-8" width="14" height="14" rx="2"></rect><rect x="47" y="-8" width="14" height="14" rx="2"></rect>
+                    </g>
+                    <rect x="-38" y="-25" width="14" height="14" rx="2" fill="#5eead4"></rect>
+                    <rect x="13" y="-8" width="14" height="14" rx="2" fill="#a78bfa"></rect>
+                  </g></g>
+                </svg>
+              </div>
+              <!-- photo album -->
+              <div class="artifact" data-ex="1">
+                <svg viewBox="0 0 160 116" aria-hidden="true">
+                  <g transform="translate(80,58)">
+                    <rect x="-58" y="-40" width="74" height="54" rx="4" fill="#23233a" stroke="#3a3a5c" stroke-width="1.5" transform="rotate(-11)"></rect>
+                    <rect x="-38" y="-36" width="74" height="54" rx="4" fill="#2b2b45" stroke="#4a4a72" stroke-width="1.5" transform="rotate(-2)"></rect>
+                    <g transform="rotate(8)">
+                      <rect x="-18" y="-32" width="74" height="54" rx="4" fill="#1c2540" stroke="#60a5fa" stroke-width="1.6"></rect>
+                      <circle cx="4" cy="-13" r="8" fill="#5eead4"></circle>
+                      <path d="M-13 17 L7 -3 L20 9 L31 0 L56 20 Z" fill="#2563eb"></path>
+                    </g>
+                  </g>
+                </svg>
+              </div>
+              <!-- arcade game -->
+              <div class="artifact" data-ex="2">
+                <svg viewBox="0 0 160 116" aria-hidden="true">
+                  <g transform="translate(80,58)">
+                    <rect x="-66" y="-42" width="132" height="84" rx="6" fill="#0c1424" stroke="#2563eb" stroke-width="1.5"></rect>
+                    <circle cx="-28" cy="-18" r="6" fill="#5eead4"></circle>
+                    <circle cx="16" cy="6" r="6" fill="#a78bfa"></circle>
+                    <rect x="-42" y="28" width="38" height="7" rx="3.5" fill="#60a5fa"></rect>
+                    <rect x="8" y="28" width="38" height="7" rx="3.5" fill="#60a5fa"></rect>
+                    <path d="M38 -28 l9 9 l-9 9 l-9 -9 z" fill="#fbbf24"></path>
+                  </g>
+                </svg>
+              </div>
+              <!-- boss report -->
+              <div class="artifact" data-ex="3">
+                <svg viewBox="0 0 160 116" aria-hidden="true">
+                  <g transform="translate(80,64)">
+                    <rect x="-46" y="-8" width="16" height="30" rx="2" fill="#2563eb"></rect>
+                    <rect x="-23" y="-24" width="16" height="46" rx="2" fill="#60a5fa"></rect>
+                    <rect x="0" y="-40" width="16" height="62" rx="2" fill="#5eead4"></rect>
+                    <rect x="23" y="-28" width="16" height="50" rx="2" fill="#a78bfa"></rect>
+                    <path d="M-42 -2 L-15 -17 L8 -32 L31 -40" fill="none" stroke="#f3f3ff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path>
+                    <line x1="-52" y1="26" x2="48" y2="26" stroke="#3a3a5c" stroke-width="1.5"></line>
+                  </g>
+                </svg>
+              </div>
+            </div>
+          </div>
+          <div class="node-label">02 &middot; It builds</div>
+        </div>
+
+        <!-- 3 · Pack -->
+        <div class="flow-node" data-stage="3">
+          <div class="node-card pack">
+            <div class="pweb-glyph">
+              <svg width="60" height="60" viewBox="0 0 36 36" aria-hidden="true">
+                <defs><linearGradient id="pgGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7c3aed"></stop><stop offset="0.46" stop-color="#2563eb"></stop><stop offset="1" stop-color="#20d6d2"></stop></linearGradient></defs>
+                <g fill="url(#pgGrad)">
+                  <rect x="9" y="6.5" width="18" height="5" rx="2.5" opacity="0.5"></rect>
+                  <rect x="7" y="11" width="22" height="6" rx="3" opacity="0.74"></rect>
+                  <rect x="5" y="16.5" width="26" height="13.5" rx="4"></rect>
+                </g>
+              </svg>
+            </div>
+            <div class="pweb-name" id="packName">periodic-table.pweb</div>
+            <div class="pack-note">PortableWeb Viewer</div>
+          </div>
+          <div class="node-label">03 &middot; Pack as .pweb</div>
+        </div>
+
+        <!-- 4 · Everywhere -->
+        <div class="flow-node" data-stage="4">
+          <div class="node-card devices">
+            <div class="device-grid">
+              <div class="device">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="7" y="2.5" width="10" height="19" rx="2.5" stroke="currentColor" stroke-width="1.6"></rect><line x1="10.5" y1="18.5" x2="13.5" y2="18.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></line></svg>
+                <span>Phone</span>
+              </div>
+              <div class="device">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="2" stroke="currentColor" stroke-width="1.6"></rect><line x1="12" y1="16" x2="12" y2="20" stroke="currentColor" stroke-width="1.6"></line><line x1="8" y1="20.5" x2="16" y2="20.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></line></svg>
+                <span>PC</span>
+              </div>
+              <div class="device">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="4" y="4" width="16" height="11" rx="1.8" stroke="currentColor" stroke-width="1.6"></rect><path d="M2 18.5h20l1.4 2.2H0.6z" fill="currentColor"></path></svg>
+                <span>Mac</span>
+              </div>
+              <div class="device">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="8.5" r="3.6" stroke="currentColor" stroke-width="1.6"></circle><path d="M5.5 20a6.5 6.5 0 0 1 13 0" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg>
+                <span>Friend</span>
+              </div>
+            </div>
+          </div>
+          <div class="node-label">04 &middot; Runs everywhere</div>
+        </div>
+      </div>
+
+      <p class="flow-caption" id="flowCaption">
+        <span class="lead">A web app, treated like a document.</span>
+        Saved, copied, shared, and run on any platform &mdash; fully offline. And as AI models mature, they&rsquo;ll generate <code>.pweb</code> directly.
+      </p>
+    </div>
+    <!-- ============ /HERO ANIMATION ============ -->
+
+    <!-- Credibility strip -->
+    <div class="cred">
+      <a href="https://www.w3.org/community/portableweb/">
+        <span class="cred-badge">W3C<br>CG</span>
+        <span class="cred-text">
+          <span class="cred-kicker">In discussion at</span>
+          <span class="cred-name">W3C Community Group</span>
+        </span>
+        <span class="cred-arrow" aria-hidden="true">&rarr;</span>
       </a>
-      <a class="btn" href="https://github.com/portableweb" target="_blank" rel="noopener noreferrer">Read the spec</a>
+      <a href="https://datatracker.ietf.org/doc/draft-selvaraj-portableweb-format/">
+        <span class="cred-badge ietf">IETF</span>
+        <span class="cred-text">
+          <span class="cred-kicker">Registered as</span>
+          <span class="cred-name">IETF Internet-Draft</span>
+        </span>
+        <span class="cred-arrow" aria-hidden="true">&rarr;</span>
+      </a>
     </div>
   </section>
 
-  <!-- What -->
+  <!-- The problem -->
+  <section class="block" id="problem">
+    <p class="eyebrow">The problem</p>
+    <h2>Interactive content is now created faster than it can be kept.</h2>
+    <p class="lead-p">
+      AI-assisted tools have changed the economics of building interactive web content.
+      A simulation, a small game, or a data-rich presentation that used to take days of
+      skilled work is now generated in minutes &mdash; by the million. None of it has a
+      natural place to live.
+    </p>
+    <p>Every existing option forces an unacceptable tradeoff:</p>
+
+    <div class="fail-list">
+      <div class="fail">
+        <div class="fail-name">Deploy to a server <span class="x">needs hosting</span></div>
+        <p>Requires infrastructure and a live connection. Wrong tool for ephemeral, single-use, or personal content &mdash; and it vanishes the day the host goes dark.</p>
+      </div>
+      <div class="fail">
+        <div class="fail-name">Publish to an app store <span class="x">needs an account</span></div>
+        <p>Developer accounts, review cycles, ongoing maintenance. Fine for long-lived commercial software; absurd for the volume of artifacts being made today.</p>
+      </div>
+      <div class="fail">
+        <div class="fail-name">PDF <span class="x">no interactivity</span></div>
+        <p>Portable and archival, but it flattens everything. A game loop, a live simulation, or a 3D model simply cannot survive the trip.</p>
+      </div>
+      <div class="fail">
+        <div class="fail-name">EPUB <span class="x">book model only</span></div>
+        <p>Its scripting is an enhancement to a reading experience, not a general runtime. It can't meaningfully represent a game or a real-time simulation.</p>
+      </div>
+      <div class="fail">
+        <div class="fail-name">Web Bundles <span class="x">never shipped</span></div>
+        <p>Designed as a network transport optimization, not a portable execution environment. No offline-first model; never achieved broad implementation.</p>
+      </div>
+      <div class="fail">
+        <div class="fail-name">Web App Manifest <span class="x">needs a live origin</span></div>
+        <p>Describes how an already-deployed app presents itself. It is tied to a web origin &mdash; it says nothing about content that has no server at all.</p>
+      </div>
+    </div>
+
+    <p class="pull">No existing format treats interactive web content as a portable, self-contained, <span class="accent">immediately runnable unit.</span></p>
+  </section>
+
+  <!-- The solution / What it is -->
   <section class="block" id="what">
-    <p class="eyebrow">What it is</p>
-    <h2>A single file that opens like a document and behaves like a small, sandboxed web app.</h2>
+    <p class="eyebrow">The solution</p>
+    <h2>PortableWeb is that unit.</h2>
     <p>
-      A PortableWeb bundle (<code>.pweb</code>) packages HTML, CSS, JavaScript,
-      and media into one file. A compatible viewer opens it in its own window,
-      sandboxed from the host system, with no network access by default.
+      A PortableWeb bundle (<code>.pweb</code>) packages the HTML, CSS, JavaScript, and media
+      of an interactive experience into <em>one file</em>. A compatible viewer opens it in its
+      own sandboxed window &mdash; on desktop, mobile, or anywhere &mdash; entirely offline,
+      with no deployment, no web origin, and no browser required.
     </p>
     <p>
-      The format is designed so that <em>the document is the unit</em>. You can
-      save it, copy it, email it, archive it, or send it across an office network
-      with AirDrop. It works offline. It doesn&rsquo;t expire when a CDN goes dark.
-      It doesn&rsquo;t need a server. It doesn&rsquo;t need a subscription.
+      It behaves like a document. You can save it, copy it, email it, archive it, or AirDrop it
+      across the room. It works the first time and the thousandth. It doesn&rsquo;t expire when a
+      CDN goes dark. The format is <strong>content-model agnostic</strong>: a bundle can hold a
+      game, a presentation, a simulation, a 3D experience, a scientific model, a report, or a book.
     </p>
     <p>
-      Each spec version freezes a stable subset of web platform features, so a
-      bundle built against v1.0 will render correctly in any v1.0-compatible viewer,
-      forever &mdash; the same archival promise PDF/A makes for static documents, applied
-      to interactive ones.
+      And the loop closes on itself. Today you ask a model to build something, then pack the
+      result as a <code>.pweb</code>. As models mature, they&rsquo;ll emit the
+      <code>.pweb</code> directly &mdash; the finished, portable file, instantly usable everywhere.
     </p>
   </section>
 
   <!-- Anatomy -->
   <section class="block" id="anatomy">
     <p class="eyebrow">Anatomy of a bundle</p>
-    <h2>Inside, it is plain. Three required files in a ZIP.</h2>
+    <h2>Inside, it is plain. A ZIP with a manifest.</h2>
     <p>
-      You can rename any <code>.pweb</code> file to <code>.zip</code> and unpack
-      it with any tool. There is no proprietary container, no hidden state, no
-      DRM. The format&rsquo;s strength is in its simplicity and its discipline, not in
-      its complexity.
+      Rename any <code>.pweb</code> to <code>.zip</code> and unpack it with anything. No proprietary
+      container, no hidden state, no DRM. Its strength is in discipline, not complexity &mdash; a
+      <code>mimetype</code> marker lets a tool identify a bundle from its first ~80 bytes, exactly
+      as EPUB does.
     </p>
 
     <div class="anatomy" role="figure" aria-label="File structure inside a .pweb bundle">
@@ -743,43 +450,43 @@
       </div>
       <div class="anatomy-row">
         <span class="filename">mimetype <span class="req">&middot; required</span></span>
-        <span class="desc">First file in the archive, uncompressed. Identifies the format as <code>application/vnd.portableweb+zip</code>.</span>
+        <span class="desc">First entry, uncompressed. Identifies the format as <code>application/vnd.portableweb+zip</code>.</span>
       </div>
       <div class="anatomy-row">
         <span class="filename">manifest.json <span class="req">&middot; required</span></span>
-        <span class="desc">Metadata: id, version, title, entry point, declared permissions, rights.</span>
+        <span class="desc">id, version, title, entry point, declared permissions, rights.</span>
       </div>
       <div class="anatomy-row">
         <span class="filename">index.html <span class="req">&middot; required</span></span>
-        <span class="desc">Entry HTML the viewer loads first. May reference any other file in the bundle.</span>
+        <span class="desc">The entry the viewer loads first. May reference any other file in the bundle.</span>
       </div>
       <div class="anatomy-row">
-        <span class="filename">assets/</span>
-        <span class="desc">Recommended: images, icons, fonts, bundled media.</span>
+        <span class="filename">assets/ media/</span>
+        <span class="desc">Recommended: images, icons, fonts, audio, video.</span>
       </div>
       <div class="anatomy-row">
-        <span class="filename">scripts/, styles/</span>
+        <span class="filename">scripts/ styles/</span>
         <span class="desc">Recommended: JavaScript modules and stylesheets.</span>
       </div>
     </div>
   </section>
 
-  <!-- Pillars -->
+  <!-- Principles -->
   <section class="block">
     <p class="eyebrow">Design principles</p>
     <h2>Self-contained, sandboxed, archival, owned.</h2>
     <div class="pillars">
       <div class="pillar">
         <h3>Self-contained</h3>
-        <p>A bundle carries everything it needs. No CDN dependency. No broken script tags in five years. No surprise network calls. Bundles are the unit of preservation.</p>
+        <p>A bundle carries everything it needs. No CDN dependency. No broken script tags in five years. No surprise network calls. The bundle is the unit of preservation.</p>
       </div>
       <div class="pillar">
         <h3>Sandboxed</h3>
-        <p>No filesystem access, no surveillance APIs, network off by default. Storage scoped per bundle. Permissions declared upfront in the manifest, enforced by the viewer.</p>
+        <p>No filesystem access, network off by default, storage scoped per bundle. Permissions are declared upfront in the manifest and enforced by the viewer, deny-by-default.</p>
       </div>
       <div class="pillar">
         <h3>Archival</h3>
-        <p>Each spec version freezes a stable subset of web features. A v1.0 bundle renders identically in any v1.0 viewer, indefinitely. New features ship in v2.0; old bundles don&rsquo;t break.</p>
+        <p>Each spec version freezes a stable subset of the web platform. A v1.0 bundle renders identically in any v1.0 viewer, indefinitely. New features ship in new versions; old bundles never break.</p>
       </div>
       <div class="pillar">
         <h3>Owned</h3>
@@ -788,97 +495,37 @@
     </div>
   </section>
 
+  <!-- Comparison -->
+  <section class="block">
+    <p class="eyebrow">How it differs</p>
+    <h2>Between the static document and the live web app.</h2>
+    <div class="comparison">
+      <table>
+        <thead>
+          <tr><th>Format</th><th>Interactive?</th><th>Offline?</th><th>Self-contained?</th><th>No server / origin?</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="format">PDF</td><td><p>Limited</p></td><td><p>Yes</p></td><td><p>Yes</p></td><td><p>Yes</p></td></tr>
+          <tr><td class="format">Webpage / URL</td><td><p>Yes</p></td><td><p>No</p></td><td><p>No</p></td><td><p>No</p></td></tr>
+          <tr><td class="format">PWA</td><td><p>Yes</p></td><td><p>After install</p></td><td><p>No</p></td><td><p>No</p></td></tr>
+          <tr><td class="format">EPUB</td><td><p>Partial</p></td><td><p>Yes</p></td><td><p>Yes</p></td><td><p>Yes</p></td></tr>
+          <tr><td class="format us">.pweb</td><td><p>Yes, fully</p></td><td><p>Always</p></td><td><p>Yes</p></td><td><p>Yes</p></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
   <!-- Use cases -->
   <section class="block">
     <p class="eyebrow">What it&rsquo;s for</p>
     <h2>Anywhere interactivity should outlive its hosting.</h2>
     <div class="use-cases">
-      <div class="use-case">
-        <div class="num">01</div>
-        <h3>Interactive presentations</h3>
-        <p>Slide decks with real interactivity, sent as a file. The natural successor to PDF for anything more than text.</p>
-      </div>
-      <div class="use-case">
-        <div class="num">02</div>
-        <h3>AI-generated artifacts</h3>
-        <p>A real home for the millions of interactive things that AI tools create. Stop deploying ephemera; start saving artifacts.</p>
-      </div>
-      <div class="use-case">
-        <div class="num">03</div>
-        <h3>Educational explainers</h3>
-        <p>Interactive lessons that work offline, without a server, on any device &mdash; and still work next year, and the year after.</p>
-      </div>
-      <div class="use-case">
-        <div class="num">04</div>
-        <h3>Personal tools</h3>
-        <p>Journals, calculators, planners, trackers. Tools you keep as files instead of renting as subscriptions.</p>
-      </div>
-      <div class="use-case">
-        <div class="num">05</div>
-        <h3>Scientific artifacts</h3>
-        <p>Reproducible figures, interactive supplements, simulations that stay reproducible across decades.</p>
-      </div>
-      <div class="use-case">
-        <div class="num">06</div>
-        <h3>Archival of interactive work</h3>
-        <p>For libraries, museums, journals, and individuals who need interactive content to survive past the lifespan of any host.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Comparison -->
-  <section class="block">
-    <p class="eyebrow">How it differs</p>
-    <h2>Sitting between the static document and the live web app.</h2>
-    <div class="comparison">
-      <table>
-        <thead>
-          <tr>
-            <th>Format</th>
-            <th>Interactive?</th>
-            <th>Offline?</th>
-            <th>Self-contained?</th>
-            <th>Archival promise?</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="format">PDF</td>
-            <td><p>Limited</p></td>
-            <td><p>Yes</p></td>
-            <td><p>Yes</p></td>
-            <td><p>PDF/A</p></td>
-          </tr>
-          <tr>
-            <td class="format">Webpage / URL</td>
-            <td><p>Yes</p></td>
-            <td><p>No</p></td>
-            <td><p>No</p></td>
-            <td><p>Link rot</p></td>
-          </tr>
-          <tr>
-            <td class="format">PWA</td>
-            <td><p>Yes</p></td>
-            <td><p>After install</p></td>
-            <td><p>No</p></td>
-            <td><p>No</p></td>
-          </tr>
-          <tr>
-            <td class="format">EPUB</td>
-            <td><p>Partial</p></td>
-            <td><p>Yes</p></td>
-            <td><p>Yes</p></td>
-            <td><p>For books</p></td>
-          </tr>
-          <tr>
-            <td class="format us">.pweb</td>
-            <td><p>Yes, fully</p></td>
-            <td><p>Always</p></td>
-            <td><p>Yes</p></td>
-            <td><p>By design</p></td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="use-case"><div class="num">01</div><h3>AI-generated artifacts</h3><p>A real home for the millions of interactive things AI tools create. Stop deploying ephemera; start saving artifacts.</p></div>
+      <div class="use-case"><div class="num">02</div><h3>Interactive presentations</h3><p>Decks with real interactivity, sent as a file. The natural successor to PDF for anything more than text.</p></div>
+      <div class="use-case"><div class="num">03</div><h3>Educational explainers</h3><p>Interactive lessons and simulations that work offline, on any device &mdash; and still work next year, and the year after.</p></div>
+      <div class="use-case"><div class="num">04</div><h3>3D &amp; data experiences</h3><p>Models, visualizations, and reproducible figures that stay explorable &mdash; not screenshots of something that used to run.</p></div>
+      <div class="use-case"><div class="num">05</div><h3>Personal tools</h3><p>Journals, calculators, planners, trackers. Tools you keep as files instead of renting as subscriptions.</p></div>
+      <div class="use-case"><div class="num">06</div><h3>Archival of interactive work</h3><p>For libraries, museums, journals, and individuals who need interactive content to outlive any host.</p></div>
     </div>
   </section>
 
@@ -888,64 +535,41 @@
     <h2>A browser-based app for working with bundles.</h2>
     <p>
       The PortableWeb app runs entirely in your browser &mdash; open and render any
-      <code>.pweb</code>, pack a project folder into a bundle, validate one against
-      the spec, or scaffold a new project. No install, no account, and nothing ever
-      leaves your device.
+      <code>.pweb</code>, pack a project folder into a bundle, validate one against the spec,
+      or scaffold a new project. No install, no account, and nothing ever leaves your device.
     </p>
 
     <div class="viewer-grid">
       <div class="viewer-left">
         <ul class="viewer-caps">
           <li>
-            <span class="vc-icon">
-              <svg width="16" height="16" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M1.5 8.5v1.25A.75.75 0 002.25 10.5h7.5a.75.75 0 00.75-.75V8.5M6 1.5v6M3.5 5l2.5 2.5L8.5 5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </span>
-            <div>
-              <span class="vc-title">Open &amp; render</span>
-              <span class="vc-desc">Drag a <code>.pweb</code> anywhere onto the window &mdash; it opens sandboxed, full-screen.</span>
-            </div>
+            <span class="vc-icon"><svg width="16" height="16" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M1.5 8.5v1.25A.75.75 0 002.25 10.5h7.5a.75.75 0 00.75-.75V8.5M6 1.5v6M3.5 5l2.5 2.5L8.5 5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
+            <div><span class="vc-title">Open &amp; render</span><span class="vc-desc">Drag a <code>.pweb</code> anywhere onto the window &mdash; it opens sandboxed, full-screen.</span></div>
           </li>
           <li>
-            <span class="vc-icon">
-              <svg width="17" height="17" viewBox="0 0 18 18" fill="none" aria-hidden="true"><rect x="2.5" y="2.5" width="13" height="5.5" rx="1.5" stroke="currentColor" stroke-width="1.4"/><path d="M9 15.5v-7M6.2 11l2.8-2.8L11.8 11" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </span>
-            <div>
-              <span class="vc-title">Pack</span>
-              <span class="vc-desc">Turn a project folder into a spec-compliant <code>.pweb</code> bundle in one click.</span>
-            </div>
+            <span class="vc-icon"><svg width="17" height="17" viewBox="0 0 18 18" fill="none" aria-hidden="true"><rect x="2.5" y="2.5" width="13" height="5.5" rx="1.5" stroke="currentColor" stroke-width="1.4"></rect><path d="M9 15.5v-7M6.2 11l2.8-2.8L11.8 11" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
+            <div><span class="vc-title">Pack</span><span class="vc-desc">Turn a project folder into a spec-compliant <code>.pweb</code> bundle in one click.</span></div>
           </li>
           <li>
-            <span class="vc-icon">
-              <svg width="17" height="17" viewBox="0 0 18 18" fill="none" aria-hidden="true"><circle cx="9" cy="9" r="6.5" stroke="currentColor" stroke-width="1.4"/><path d="M6.2 9l2 2 3.6-3.8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </span>
-            <div>
-              <span class="vc-title">Validate</span>
-              <span class="vc-desc">Run the spec checks against any bundle and get a clear pass&thinsp;/&thinsp;fail report.</span>
-            </div>
+            <span class="vc-icon"><svg width="17" height="17" viewBox="0 0 18 18" fill="none" aria-hidden="true"><circle cx="9" cy="9" r="6.5" stroke="currentColor" stroke-width="1.4"></circle><path d="M6.2 9l2 2 3.6-3.8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
+            <div><span class="vc-title">Validate</span><span class="vc-desc">Run the spec checks against any bundle and get a clear pass&thinsp;/&thinsp;fail report.</span></div>
           </li>
           <li>
-            <span class="vc-icon">
-              <svg width="17" height="17" viewBox="0 0 18 18" fill="none" aria-hidden="true"><rect x="2.5" y="2.5" width="13" height="13" rx="3" stroke="currentColor" stroke-width="1.4"/><path d="M9 6v6M6 9h6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-            </span>
-            <div>
-              <span class="vc-title">New project</span>
-              <span class="vc-desc">Scaffold a ready-to-edit starter, download as <code>.pweb</code> or <code>.zip</code>.</span>
-            </div>
+            <span class="vc-icon"><svg width="17" height="17" viewBox="0 0 18 18" fill="none" aria-hidden="true"><rect x="2.5" y="2.5" width="13" height="13" rx="3" stroke="currentColor" stroke-width="1.4"></rect><path d="M9 6v6M6 9h6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path></svg></span>
+            <div><span class="vc-title">New project</span><span class="vc-desc">Scaffold a ready-to-edit starter, download as <code>.pweb</code> or <code>.zip</code>.</span></div>
           </li>
         </ul>
 
         <div class="viewer-cta">
           <a class="btn primary" href="/app/">Open the web app &rarr;</a>
-          <p class="viewer-install-note">
-            Install it in Chrome or Edge and <code>.pweb</code> files open on double-click &mdash; no browser step.
-          </p>
+          <p class="viewer-install-note">Install it in Chrome or Edge and <code>.pweb</code> files open on double-click &mdash; no browser step.</p>
         </div>
       </div>
 
       <div class="app-mock" aria-hidden="true">
         <div class="mock-rail">
           <div class="mock-brand">
-            <svg viewBox="0 0 36 36" fill="none"><rect x="9" y="6.5" width="18" height="5" rx="2.5" fill="#e8e8ff" opacity="0.32"/><rect x="7" y="11" width="22" height="6" rx="3" fill="#e8e8ff" opacity="0.6"/><rect x="5" y="16.5" width="26" height="13.5" rx="4" fill="#e8e8ff"/></svg>
+            <svg viewBox="0 0 36 36" fill="none"><rect x="9" y="6.5" width="18" height="5" rx="2.5" fill="#e8e8ff" opacity="0.32"></rect><rect x="7" y="11" width="22" height="6" rx="3" fill="#e8e8ff" opacity="0.6"></rect><rect x="5" y="16.5" width="26" height="13.5" rx="4" fill="#e8e8ff"></rect></svg>
             <span class="mb-word">PortableWeb</span>
           </div>
           <div class="mock-label">Create</div>
@@ -959,7 +583,7 @@
           <div class="mock-topbar"><span class="mock-crumb">PortableWeb / Home</span></div>
           <div class="mock-body">
             <div class="mock-hero">
-              <span class="mh-glyph"><svg viewBox="0 0 36 36" fill="none"><rect x="9" y="6.5" width="18" height="5" rx="2.5" fill="currentColor" opacity="0.3"/><rect x="7" y="11" width="22" height="6" rx="3" fill="currentColor" opacity="0.55"/><rect x="5" y="16.5" width="26" height="13.5" rx="4" fill="currentColor"/></svg></span>
+              <span class="mh-glyph"><svg viewBox="0 0 36 36" fill="none"><rect x="9" y="6.5" width="18" height="5" rx="2.5" fill="currentColor" opacity="0.3"></rect><rect x="7" y="11" width="22" height="6" rx="3" fill="currentColor" opacity="0.55"></rect><rect x="5" y="16.5" width="26" height="13.5" rx="4" fill="currentColor"></rect></svg></span>
               <span class="mh-title">Open a bundle</span>
               <span class="mh-sub">Drag a .pweb here, or choose</span>
               <span class="mh-btn">Open .pweb file</span>
@@ -970,6 +594,28 @@
     </div>
   </section>
 
+  <!-- Standards -->
+  <section class="block" id="standards">
+    <p class="eyebrow">Standards &amp; openness</p>
+    <h2>Being built in the open, where the web is built.</h2>
+    <p class="lead-p">
+      PortableWeb isn&rsquo;t a private format. The container and manifest are specified in an
+      IETF Internet-Draft, and the broader format &mdash; sandbox, storage, signing, and a
+      genuinely new offline peer-to-peer channel &mdash; is being developed in a W3C
+      Community Group, open to anyone.
+    </p>
+    <div class="links-grid">
+      <a class="link-card" href="https://www.w3.org/community/portableweb/">
+        <div class="link-card-top"><span class="link-title">W3C Community Group</span><span class="link-arrow" aria-hidden="true">&rarr;</span></div>
+        <p class="link-desc">Portable Web Content Format CG. Container, manifest, viewer conformance, storage, and inter-bundle communication. Anyone may join.</p>
+      </a>
+      <a class="link-card" href="https://datatracker.ietf.org/doc/draft-selvaraj-portableweb-format/">
+        <div class="link-card-top"><span class="link-title">IETF Internet-Draft</span><span class="link-arrow" aria-hidden="true">&rarr;</span></div>
+        <p class="link-desc">draft-selvaraj-portableweb-format &mdash; the container format, manifest schema, security considerations, and the <code>application/vnd.portableweb+zip</code> media type.</p>
+      </a>
+    </div>
+  </section>
+
   <!-- Roadmap -->
   <section class="block" id="roadmap">
     <p class="eyebrow">Roadmap</p>
@@ -977,31 +623,19 @@
     <div class="roadmap">
       <div class="roadmap-item">
         <div class="roadmap-version">v0.1</div>
-        <div class="roadmap-body">
-          <h3>Container &amp; manifest <em>(here today)</em></h3>
-          <p>The ZIP layout, the mimetype convention, the manifest schema, the first example bundle. Specs and the <code>hello.pweb</code> bundle are public on GitHub.</p>
-        </div>
+        <div class="roadmap-body"><h3>Container &amp; manifest <em>(here today)</em></h3><p>The ZIP layout, the mimetype convention, the manifest schema, the media-type registration. Specified in the IETF draft, with the first example bundles public.</p></div>
       </div>
       <div class="roadmap-item">
-        <div class="roadmap-version future">v0.2</div>
-        <div class="roadmap-body">
-          <h3>Sandbox and runtime profile</h3>
-          <p>Formal sandbox spec. The frozen subset of HTML/CSS/JS allowed in v1.0 bundles. First reference viewer (cross-platform).</p>
-        </div>
+        <div class="roadmap-version future">Next</div>
+        <div class="roadmap-body"><h3>Sandbox &amp; runtime profile</h3><p>The formal sandbox spec and the frozen subset of HTML/CSS/JS allowed per version. First cross-platform reference viewer.</p></div>
       </div>
       <div class="roadmap-item">
-        <div class="roadmap-version future">v0.3 &ndash; 0.9</div>
-        <div class="roadmap-body">
-          <h3>Iteration with real users</h3>
-          <p>CLI validator, mobile viewers, AI tool integrations. Specs evolve based on what people actually build.</p>
-        </div>
+        <div class="roadmap-version future">Then</div>
+        <div class="roadmap-body"><h3>Storage, signing &amp; peer channels</h3><p>Per-bundle isolated storage, cryptographic signing, and a permission-gated local channel (Bluetooth, Wi-Fi Direct) for offline multiplayer and collaboration &mdash; a capability no existing format has.</p></div>
       </div>
       <div class="roadmap-item">
         <div class="roadmap-version future">v1.0</div>
-        <div class="roadmap-body">
-          <h3>Stable spec</h3>
-          <p>From v1.0 forward, bundles render correctly in any v1.0-compatible viewer, forever. New features ship in v1.x and v2.x without breaking old bundles.</p>
-        </div>
+        <div class="roadmap-body"><h3>Stable spec</h3><p>From v1.0 forward, bundles render correctly in any v1.0-compatible viewer, forever. New features ship in v1.x and v2.x without breaking old bundles.</p></div>
       </div>
     </div>
   </section>
@@ -1011,23 +645,21 @@
     <p class="eyebrow">Get involved</p>
     <h2>The spec is open. The work is just beginning.</h2>
     <p>
-      PortableWeb is a small project with large ambitions. If any of this matters
-      to you &mdash; as an engineer, an educator, an archivist, a designer, a researcher,
-      a writer &mdash; there&rsquo;s a place for you in it.
+      PortableWeb is a small project with large ambitions. If any of this matters to you &mdash;
+      as an engineer, an educator, an archivist, a designer, a researcher, or a writer &mdash;
+      there&rsquo;s a place for you in it.
     </p>
     <div class="links-grid">
-      <a class="link-card" href="https://github.com/portableweb" target="_blank" rel="noopener noreferrer">
-        <div class="link-card-top">
-          <span class="link-title">Spec on GitHub</span>
-          <span class="link-arrow" aria-hidden="true">&rarr;</span>
-        </div>
-        <p class="link-desc">Read the v0.1 spec, browse the examples, open issues, send PRs.</p>
+      <a class="link-card" href="https://www.w3.org/community/portableweb/join">
+        <div class="link-card-top"><span class="link-title">Join the W3C group</span><span class="link-arrow" aria-hidden="true">&rarr;</span></div>
+        <p class="link-desc">Help shape the specification. W3C membership isn&rsquo;t required &mdash; anyone can join.</p>
       </a>
-      <a class="link-card" href="https://github.com/portableweb/spec/discussions" target="_blank" rel="noopener noreferrer">
-        <div class="link-card-top">
-          <span class="link-title">Discuss</span>
-          <span class="link-arrow" aria-hidden="true">&rarr;</span>
-        </div>
+      <a class="link-card" href="https://github.com/portableweb/spec">
+        <div class="link-card-top"><span class="link-title">Spec on GitHub</span><span class="link-arrow" aria-hidden="true">&rarr;</span></div>
+        <p class="link-desc">Read it, browse the examples, open issues, send PRs.</p>
+      </a>
+      <a class="link-card" href="https://github.com/portableweb/portableweb/discussions">
+        <div class="link-card-top"><span class="link-title">Discuss</span><span class="link-arrow" aria-hidden="true">&rarr;</span></div>
         <p class="link-desc">Ideas, questions, design conversations. The earlier you join, the more your voice shapes things.</p>
       </a>
     </div>
@@ -1038,12 +670,19 @@
     <div class="footer-grid">
       <div class="footer-meta">
         <span>PortableWeb &middot; v0.1 Draft &middot; 2026</span>
-        <span>Spec licensed <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC-BY 4.0</a> &middot; Code licensed <a href="https://opensource.org/licenses/MIT" target="_blank" rel="noopener noreferrer">MIT</a></span>
+        <span>
+          <a href="https://www.w3.org/community/portableweb/">W3C CG</a> &middot;
+          <a href="https://datatracker.ietf.org/doc/draft-selvaraj-portableweb-format/">IETF Draft</a> &middot;
+          Spec <a href="https://creativecommons.org/licenses/by/4.0/">CC-BY 4.0</a> &middot;
+          Code <a href="https://opensource.org/licenses/MIT">MIT</a>
+        </span>
       </div>
     </div>
   </footer>
 
 </div>
+
+<script src="flow.js" defer></script>
 
 </body>
 </html>
