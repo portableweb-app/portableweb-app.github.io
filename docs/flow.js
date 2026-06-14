@@ -15,15 +15,16 @@
   var nodes     = Array.prototype.slice.call(stage.querySelectorAll(".flow-node"));
   var artifacts = Array.prototype.slice.call(stage.querySelectorAll(".artifact"));
   var packName  = stage.querySelector("#packName");
+  var shareEl   = stage.querySelector("#flowShare");
   var caption   = stage.querySelector("#flowCaption");
   var toggle    = stage.querySelector(".flow-toggle");
   var togWord   = stage.querySelector(".tog-word");
 
   var EXAMPLES = [
-    { prompt: "Build me an interactive 3D periodic table.", file: "periodic-table.pweb", ex: 0 },
-    { prompt: "Make a 3D photo album of our trip.",         file: "italy-2026.pweb",     ex: 1 },
-    { prompt: "Code a little arcade game I can play.",       file: "starhopper.pweb",     ex: 2 },
-    { prompt: "An interactive report for my boss.",          file: "q3-review.pweb",      ex: 3 }
+    { prompt: "Build me an interactive 3D periodic table.", file: "periodic-table.pweb", ex: 0, to: "Friend" },
+    { prompt: "Make a 3D photo album of our trip.",         file: "italy-2026.pweb",     ex: 1, to: "Friend" },
+    { prompt: "Code a little arcade game I can play.",       file: "starhopper.pweb",     ex: 2, to: "Friend" },
+    { prompt: "An interactive report for my boss.",          file: "q3-review.pweb",      ex: 3, to: "Boss" }
   ];
 
   var CAP_DEFAULT =
@@ -94,6 +95,7 @@
     setActive(1);
     showArtifact(ex.ex);
     if (packName) packName.textContent = ex.file;
+    if (shareEl) shareEl.textContent = ex.to;
     applyCaption();
     typePrompt(ex.prompt);
 
@@ -136,6 +138,7 @@
     if (caretEl) caretEl.style.display = "none";
     showArtifact(ex0.ex);
     if (packName) packName.textContent = ex0.file;
+    if (shareEl) shareEl.textContent = ex0.to;
     nodes.forEach(function (n) { n.classList.add("is-active"); });
     caption.innerHTML = CAP_DEFAULT;
     stage.classList.add("is-paused");
