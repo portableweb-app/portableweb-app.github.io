@@ -116,7 +116,7 @@ h1.hero-title {
 }
 h1.hero-title .accent { background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
 .hero-lede { font-size: clamp(1.12rem, 2vw, 1.38rem); line-height: 1.5; max-width: 40em; margin: 0 0 2.25rem; color: var(--ink-soft); }
-.cta-row { display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; }
+.cta-row { display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; margin-bottom: clamp(2.75rem, 6vw, 4rem); }
 
 .btn {
   display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.7rem 1.3rem;
@@ -174,8 +174,8 @@ p { margin: 0 0 1rem; max-width: 38em; }
   display: grid; grid-template-columns: 13rem 1fr; gap: 1.5rem;
   padding: 1.25rem 0; border-bottom: 1px solid var(--rule); align-items: baseline;
 }
-.fail-name { font-weight: 600; font-size: 1.05rem; color: var(--ink); display: flex; align-items: baseline; gap: 0.6rem; }
-.fail-name .x { font-family: var(--mono); font-size: 0.7rem; color: var(--accent); border: 1px solid var(--rule); border-radius: 5px; padding: 0.1rem 0.4rem; letter-spacing: 0.06em; white-space: nowrap; }
+.fail-name { font-weight: 600; font-size: 1.05rem; color: var(--ink); display: flex; flex-direction: column; align-items: flex-start; gap: 0.55rem; }
+.fail-name .x { font-family: var(--mono); font-size: 0.7rem; color: var(--accent); border: 1px solid var(--rule); border-radius: 5px; padding: 0.18rem 0.45rem; letter-spacing: 0.06em; white-space: nowrap; }
 .fail p { margin: 0; font-size: 0.98rem; color: var(--ink-soft); }
 @media (max-width: 600px) { .fail { grid-template-columns: 1fr; gap: 0.4rem; } }
 
